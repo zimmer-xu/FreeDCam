@@ -521,6 +521,42 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="F"
+            android:id="@+id/textView"
+            android:layout_below="@+id/textView_timerRecording"
+            android:layout_toRightOf="@+id/linearLayout" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="E"
+            android:id="@+id/textView2"
+            android:layout_above="@+id/imageViewEMet"
+            android:layout_alignRight="@+id/textView_timerRecording"
+            android:layout_alignEnd="@+id/textView_timerRecording" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewFMet"
+            android:background="@drawable/icon_meter_matrix"
+            android:layout_below="@+id/textView"
+            android:layout_toRightOf="@+id/linearLayout" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewEMet"
+            android:background="@drawable/icon_meter_matrix"
+            android:layout_alignTop="@+id/imageViewFMet"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignStart="@+id/textView2" />
+
     </RelativeLayout>
 
     <ImageButton
@@ -539,7 +575,8 @@
         android:id="@+id/imageViewWeight"
         android:background="@drawable/icon_meter_spot"
         android:layout_marginLeft="550dp"
-        android:layout_marginTop="180dp" />
+        android:layout_marginTop="180dp"
+        android:visibility="gone" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -731,7 +768,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/baseMenuLayout"
         android:longClickable="false"
-        android:measureWithLargestChild="false">
+        android:measureWithLargestChild="false"
+        android:visibility="visible">
 
         <LinearLayout
             android:orientation="vertical"
@@ -767,8 +805,9 @@
             android:focusableInTouchMode="false"
             android:orientation="horizontal"
             android:layout_marginTop="-148dp"
-            android:layout_marginLeft="50dp"
-            android:background="@drawable/camera_frame_box_ver_bg">
+            android:background="@drawable/camera_frame_box_ver_bg"
+            android:measureWithLargestChild="false"
+            android:layout_marginLeft="50dp">
 
             <CheckBox
                 android:layout_width="@android:dimen/app_icon_size"
@@ -920,7 +959,7 @@
             android:background="@drawable/camera_frame_box_ver_bg"
             android:layout_marginBottom="-3dp"
             android:longClickable="false"
-            android:measureWithLargestChild="true">
+            android:measureWithLargestChild="false">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -946,6 +985,18 @@
                     android:background="@drawable/icon_settings_onscreeni"
                     android:textSize="@dimen/TextSizeSmall"
                     android:singleLine="true" />
+
+                <Button
+                    android:layout_width="@android:dimen/app_icon_size"
+                    android:layout_height="@android:dimen/app_icon_size"
+                    android:id="@+id/buttonCamerMode"
+                    android:background="@drawable/icon_camera_mode" />
+
+                <Button
+                    android:layout_width="@android:dimen/app_icon_size"
+                    android:layout_height="@android:dimen/app_icon_size"
+                    android:id="@+id/buttonComposition"
+                    android:background="@drawable/icon_composition" />
             </LinearLayout>
 
             <LinearLayout
@@ -1014,7 +1065,8 @@
                     android:id="@+id/button_af_assit"
                     android:layout_below="@+id/linearLayout"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout

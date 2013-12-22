@@ -230,7 +230,7 @@ public class MainActivity extends Activity implements ParametersChangedInterface
         chipsetProp();
         onScreenText();
         showtext();
-        hidenavkeys();
+
 
         hideCurrentConfig();
 
@@ -747,19 +747,35 @@ public class MainActivity extends Activity implements ParametersChangedInterface
         try {
             String s = Build.MODEL;
 
-            if(!CameraManager.isG2())
+            if(CameraManager.isG2() == false)
                 manualFocus.setVisibility(View.GONE);
 
-            if (!CameraManager.isQualcomm())
-                checkBoxZSL.setEnabled(false);
-                buttonMetering.setEnabled(false);
-
-            if(!s.equals("LG-P720") || !s.equals("LG-P725"))
+            if(s.equals("LG-P720") == false || s.equals("LG-P725") == false)
                 upsidedown.setVisibility(View.GONE);
 
             if (!CameraManager.isOmap())
-                ippButton.setEnabled(false);
-                exposureButton.setEnabled(false);
+                ippButton.setVisibility(View.GONE);
+
+            if (camMan.parametersManager.getSupportBrightness() == false)
+                brightnessCheckBox.setVisibility(View.GONE);
+
+            if (camMan.parametersManager.getSupportContrast() == false)
+                contrastcheckBox.setVisibility(View.GONE);
+
+            if (camMan.parametersManager.getSupportSaturation() == false)
+                saturationCheckBox.setVisibility(View.GONE);
+
+            if (camMan.parametersManager.getSupportSharpness() == false)
+                manualShaprness.setVisibility(View.GONE);
+
+            if (camMan.parametersManager.getSupportBrightness() == false)
+                brightnessCheckBox.setVisibility(View.GONE);
+
+            if (camMan.parametersManager.getSupportAutoExposure() == false)
+                exposureButton.setVisibility(View.GONE);
+
+            if (CameraManager.isSony() == false || CameraManager.isQualcomm() == false || CameraManager.isG2() == false || CameraManager.isExynos5() == false || CameraManager.isHTC() == false)
+                buttonMetering.setVisibility(View.GONE);
         }
         catch (NullPointerException ex)
         {

@@ -6,6 +6,7 @@ import android.widget.PopupMenu;
 
 import com.troop.freecam.CameraManager;
 import com.troop.freecam.MainActivity;
+import com.troop.freecam.manager.OEM.Samsung;
 import com.troop.freecam.manager.ParametersManager;
 
 /**
@@ -18,6 +19,7 @@ public class MeteringMenu extends BaseMenu   {
     }
 
     String [] modes;
+    Samsung sam;
 
     @Override
     public void onClick(View v)
@@ -30,8 +32,21 @@ public class MeteringMenu extends BaseMenu   {
         PopupMenu popupMenu = new PopupMenu(activity, canvasView);
 
         if(camMan.Running && camMan.parametersManager.getSupportAutoExposure())
+            if (CameraManager.isExynos5() == true){
+               modes = sam.getSupported_exposure_modes_exynos5();
+            }
+            if (CameraManager.isSony() == true)
+            {
+                modes = camMan.parametersManager.getParameters().get("sony-metering-mode-values").split(",");
+            }
+            else
+            {
+                modes = camMan.parametersManager.getParameters().get("auto-exposure-values").split(",");
+            }
 
-            modes = camMan.parametersManager.getParameters().get("auto-exposure-values").split(",");
+
+
+
 
         if (modes != null)
         {
@@ -46,7 +61,18 @@ public class MeteringMenu extends BaseMenu   {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     String tmp = item.toString();
-                    camMan.parametersManager.getParameters().set("auto-exposure", tmp);
+                    if (CameraManager.isSony() == true)
+                    {
+                        camMan.parametersManager.getParameters().set("sony-metering-mode", tmp);
+                    }
+                    if (CameraManager.isExynos5() == true)
+                    {
+                        camMan.parametersManager.getParameters().set("metering", tmp);
+                    }
+                    else
+                    {
+                        camMan.parametersManager.getParameters().set("auto-exposure", tmp);
+                    }
                     activity.OnScreeMeterValue.setText(tmp);
                     activity.buttonMetering.setText(tmp);
 

@@ -111,41 +111,48 @@ public class ParametersManager
 
     private void checkParametersSupport()
     {
+
         try
         {
             int i = parameters.getInt("sharpness");
-            supportSharpness = true;
+
+            if(i >= 1) supportSharpness = true;
+            else supportSharpness = false;
         }
-        catch (Exception ex)
+        catch (NullPointerException ex)
         {
-            supportSharpness = false;
+
         }
         try
         {
             int i = parameters.getInt("contrast");
-            supportContrast = true;
+            if(i >= 1) supportContrast = true;
+            else supportContrast = false;
+
         }
-        catch (Exception ex)
+        catch (NullPointerException ex)
         {
-            supportContrast = false;
+
         }
         try
         {
             int i = parameters.getInt("brightness");
-            supportBrightness = true;
+            if(i >= 1) supportBrightness = true;
+            else supportBrightness = false;
         }
-        catch (Exception ex)
+        catch (NullPointerException ex)
         {
-            supportBrightness = false;
+
         }
         try
         {
             int i = parameters.getInt("saturation");
-            supportSaturation = true;
+            if(i >= 1) supportSaturation = true;
+            else supportSaturation = false;
         }
-        catch (Exception ex)
+        catch (NullPointerException ex)
         {
-            supportSaturation = false;
+
         }
 
         if (parameters.getFlashMode() != null)
@@ -154,34 +161,46 @@ public class ParametersManager
             supportFlash = false;
         try
         {
-            if (!parameters.get("vnf-supported").equals(""))
-                supportVNF = true;
+            if (parameters.get("vnf-supported").length() >= 3) supportVNF = true;
+            else supportVNF = false;
         }
-        catch (Exception ex)
+        catch (NullPointerException ex)
         {
-            supportVNF = false;
+
         }
         try
         {
-            if (!parameters.get("auto-exposure-values").equals(""))
-                supportAutoExposure= true;
+            if (CameraManager.isOmap() == true){
+                if (parameters.get("auto-exposure-values").length() >= 3) supportAutoExposure= true;
+                else supportAutoExposure = false;
+            }
+            if (CameraManager.isSony() == true){
+                if (parameters.get("sony-ae-mode-values").length() >= 3) supportAutoExposure= true;
+                else supportAutoExposure = false;
+            }
         }
-        catch (Exception ex)
+        catch (NullPointerException ex)
         {
-            supportAutoExposure = false;
+
         }
 
         try {
-            if (CameraManager.isQualcomm())
-                if(!parameters.get("selectable-zone-af-values").equals(""))
+            if (CameraManager.isQualcomm() == true)
+                if(parameters.get("selectable-zone-af-values").length() >= 3)
                     supportAfpPriority = true;
-            if (CameraManager.isOmap())
-                if(!parameters.get("auto-convergence-mode-values").equals(""))
+                else supportAfpPriority = false;
+            if (CameraManager.isOmap() == true)
+                if(parameters.get("auto-convergence-mode-values").length() >=3)
                     supportAfpPriority = true;
+                else supportAfpPriority = false;
+            if (CameraManager.isSony() == true)
+                if (parameters.get("").length() >= 3) supportAfpPriority = true;
+                else supportAfpPriority = false;
+
         }
         catch (Exception ex)
         {
-            supportAfpPriority = false;
+
         }
 
     }

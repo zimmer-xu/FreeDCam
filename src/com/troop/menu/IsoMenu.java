@@ -6,6 +6,7 @@ import android.widget.PopupMenu;
 
 import com.troop.freecam.CameraManager;
 import com.troop.freecam.MainActivity;
+import com.troop.freecam.manager.OEM.Samsung;
 import com.troop.freecam.manager.ParametersManager;
 
 
@@ -18,6 +19,7 @@ public class IsoMenu extends BaseMenu {
     }
 
     String[] isos;
+    Samsung sam;
 
     @Override
     public void onClick(View v)
@@ -26,10 +28,18 @@ public class IsoMenu extends BaseMenu {
         {
             try
             {
-                if(CameraManager.isOmap())
+                if(CameraManager.isOmap() == true){
                     isos = camMan.parametersManager.getParameters().get("iso-mode-values").split(",");
-                if(CameraManager.isQualcomm())
+                }
+                if(CameraManager.isQualcomm() == true){
                     isos = camMan.parametersManager.getParameters().get("iso-values").split(",");
+                }
+                if(CameraManager.isSony() == true){
+                    isos = camMan.parametersManager.getParameters().get("sony-iso-values").split(",");
+                }
+                if(CameraManager.isExynos5() == true){
+                    isos = sam.getSupported_iso_exynos5();
+                }
 
             }
             catch (Exception ex)
@@ -49,7 +59,10 @@ public class IsoMenu extends BaseMenu {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     String tmp = item.toString();
-                    camMan.parametersManager.getParameters().set("iso", tmp);
+                    if(CameraManager.isSony() == true)
+                        camMan.parametersManager.getParameters().set("sony-iso", tmp);
+                    else
+                        camMan.parametersManager.getParameters().set("iso", tmp);
                     String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_3D);
                     if (camvalue.equals(ParametersManager.SwitchCamera_MODE_3D))
                         preferences.edit().putString(ParametersManager.Preferences_Iso3D, tmp).commit();

@@ -23,7 +23,9 @@ public class switchcameramenu extends  BaseMenu
         PopupMenu popupMenu = new PopupMenu(activity, super.GetPlaceHolder());
         //popupMenu.getMenuInflater().inflate(R.menu.menu_popup_flash, popupMenu.getMenu().);
 
+        if (camMan.is3d() == true){
         popupMenu.getMenu().add((CharSequence) ParametersManager.SwitchCamera_MODE_3D);
+        }
         popupMenu.getMenu().add((CharSequence) ParametersManager.SwitchCamera_MODE_2D);
         popupMenu.getMenu().add((CharSequence) ParametersManager.SwitchCamera_MODE_Front);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

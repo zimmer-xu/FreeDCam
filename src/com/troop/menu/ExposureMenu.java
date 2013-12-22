@@ -26,10 +26,14 @@ public class ExposureMenu extends BaseMenu {
         {
             try {
 
-                if(CameraManager.isOmap())
+                if(CameraManager.isOmap() == true){
                 exposures = camMan.parametersManager.getParameters().get("exposure-mode-values").split(",");
-                if(CameraManager.isQualcomm() || CameraManager.isExynos() || CameraManager.isTegra())
-                    exposures = null;
+                }
+                if (CameraManager.isSony() == true)
+                {
+                    exposures = camMan.parametersManager.getParameters().get("sony-ae-mode-values").split(",");
+                }
+
             }
             catch (Exception ex)
             {}
@@ -47,6 +51,13 @@ public class ExposureMenu extends BaseMenu {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     String tmp = item.toString();
+                    if(CameraManager.isOmap() == true){
+                        camMan.parametersManager.getParameters().set("exposure", tmp);
+                    }
+                    if (CameraManager.isSony() == true)
+                    {
+                        camMan.parametersManager.getParameters().set("sony-ae-mode", tmp);
+                    }
 
                     String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_3D);
                     if (camvalue.equals(ParametersManager.SwitchCamera_MODE_3D))
@@ -57,7 +68,7 @@ public class ExposureMenu extends BaseMenu {
                         preferences.edit().putString(ParametersManager.Preferences_Exposure2D, tmp).commit();
                     if (camvalue.equals(ParametersManager.SwitchCamera_MODE_Front))
                         preferences.edit().putString(ParametersManager.Preferences_ExposureFront, tmp).commit();
-                    camMan.parametersManager.getParameters().set("exposure", tmp);
+
                     //if (tmp.equals("manual"))
                     //activity.exposureSeekbar.setVisibility(View.VISIBLE);
                     //else

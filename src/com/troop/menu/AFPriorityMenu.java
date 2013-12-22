@@ -29,11 +29,16 @@ public class AFPriorityMenu extends BaseMenu  {
         PopupMenu popupMenu = new PopupMenu(activity, canvasView);
 
         if(camMan.Running && camMan.parametersManager.getSupportAfpPriority())
-            if (CameraManager.isQualcomm())
+            if (CameraManager.isQualcomm() == true){
             modes = camMan.parametersManager.getParameters().get("selectable-zone-af-values").split(",");
-
-            if (CameraManager.isOmap())
+            }
+            if (CameraManager.isOmap() == true){
                 modes = camMan.parametersManager.getParameters().get("auto-convergence-mode-values").split(",");
+            }
+            if (CameraManager.isSony() == true)
+            {
+                modes = camMan.parametersManager.getParameters().get("sony-focus-area-values").split(",");
+            }
         if (modes != null)
         {
             //PopupMenu popupMenu = new PopupMenu(activity, super.GetPlaceHolder());
@@ -47,10 +52,16 @@ public class AFPriorityMenu extends BaseMenu  {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     String tmp = item.toString();
-                    if (CameraManager.isQualcomm())
+                    if (CameraManager.isQualcomm() == true){
                         camMan.parametersManager.getParameters().set("selectable-zone-af", tmp);
-                    if (CameraManager.isOmap())
+                    }
+                    if (CameraManager.isOmap() == true){
                         camMan.parametersManager.getParameters().set("auto-convergence-mode", tmp);
+                    }
+                    if (CameraManager.isSony() == true)
+                    {
+                        camMan.parametersManager.getParameters().set("sony-focus-area", tmp);
+                    }
 
                     activity.OnScreenFocusValue.setText("AFP:"+ tmp);
                     activity.buttonAfPriority.setText(tmp);
