@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/com.troop.freecam"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".ControlsTestActivity"
+    android:background="#9b9b9b">
+
+    <com.troop.freecam.controls.StyleAbelSlider
+        app:SliderImage="@drawable/icon_shutter_thanos_blast"
+        app:horizontal="true"
+        app:SliderHeight="100"
+        app:SliderWidth="100"
+
+        android:layout_width="wrap_content"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:id="@+id/view2"
+        android:background="@drawable/ic_seek_bar_background"
+        android:visibility="visible" />
+
+</LinearLayout>
