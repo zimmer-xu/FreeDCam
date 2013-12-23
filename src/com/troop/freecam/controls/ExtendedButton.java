@@ -52,41 +52,59 @@ public class ExtendedButton extends View
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
-        Paint paintBlack = new Paint();
-        paintBlack.setColor(Color.BLACK);
-        paintBlack.setStyle(Paint.Style.FILL);
 
-        getMatchingTextSize(paintBlack, height, topString);
-        canvas.drawText(topString, 2, height - 2, paintBlack);
-        getMatchingTextSize(paint, height, topString);
-        canvas.drawText(topString, 0, height - 2, paint);
-
+        draw(canvas, topString, height, paint, 1);
+        midString = "4096x1536";
         if (midString != null)
-            canvas.drawText(midString, 0, height*2 - 4 , paint);
-        getMatchingTextSize(paintBlack, height, botString);
-        canvas.drawText(botString, 2, height*3 - 6, paintBlack);
-        getMatchingTextSize(paint, height, botString);
-        canvas.drawText(botString, 0, height*3 - 6, paint);
-
-
+        {
+            drawMidString(canvas, midString, height, paint, 2);
+        }
+        draw(canvas, botString, height, paint, 3);
     }
 
-    private void getMatchingTextSize(Paint paint, int height, String _string)
+    private int getMatchingTextSize(Paint paint, int height, String _string)
     {
         paint.setTextSize(height);
         int count = height;
         int length = (int)paint.measureText(_string);
-        if (length > getWidth())
+        if (length + 8 > getWidth())
         {
-            int dif = length - getWidth();
+            int dif = length + 8 - getWidth();
             for (int i = 0; i < dif; i++)
             {
                 count--;
                 paint.setTextSize(count);
                 length = (int)paint.measureText(_string);
-                if (length <= getWidth())
+                if (length + 8 <= getWidth())
                     break;
             }
         }
+        return length;
+    }
+
+    private void draw(Canvas canvas,String string, int height, Paint paint, int count)
+    {
+        int length = getMatchingTextSize(paint, height, string);
+        int dif = getWidth() - length;
+        paint.setColor(Color.BLACK);
+        canvas.drawText(string, dif/2 + 2, (height - 1 *count)* count, paint);
+        paint.setColor(Color.WHITE);
+        canvas.drawText(string, dif/2, (height - 1* count) * count, paint);
+    }
+
+    private void drawMidString(Canvas canvas,String string, int height, Paint paint, int count)
+    {
+        int length = getMatchingTextSize(paint, height, string);
+        int dif = getWidth() - length;
+        paint.setColor(Color.BLACK);
+        canvas.drawText(string, dif/2 + 2, (height - 1 *count)* count, paint);
+        paint.setColor(Color.RED);
+        canvas.drawText(string, dif/2, (height - 1* count) * count, paint);
+    }
+
+    public void SetValue(String value)
+    {
+        midString = value;
+        invalidate();
     }
 }
