@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.troop.freecam.HDR.BitmapHandler;
 import com.troop.freecam.R;
+import com.troop.freecam.manager.interfaces.IStyleAbleSliderValueHasChanged;
 
 /**
  * Created by troop on 22.12.13.
@@ -37,6 +38,9 @@ public class StyleAbelSlider extends View
     boolean horizontal;
 
     int picID;
+    TypedArray a;
+
+    public IStyleAbleSliderValueHasChanged valueHasChanged;
 
     public StyleAbelSlider(Context context) {
         super(context);
@@ -57,13 +61,11 @@ public class StyleAbelSlider extends View
     private void init(Context context, AttributeSet attrs)
     {
         this.context = context;
-        TypedArray a = context.getTheme().obtainStyledAttributes(
+        a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.StyleAbelSlider,
                 0, 0);
 
-
-        picID = a.getResourceId(R.styleable.StyleAbelSlider_horizontal, R.drawable.icon_shutter_thanos_blast);
         horizontal = a.getBoolean(R.styleable.StyleAbelSlider_horizontal, false);
         min = 0;
         max = 100;
@@ -76,7 +78,7 @@ public class StyleAbelSlider extends View
 
         if (sliderImage == null)
         {
-            sliderImage = getResources().getDrawable(picID);// Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), picID), this.getHeight(), this.getHeight(), false);
+            sliderImage = getResources().getDrawable(a.getResourceId(R.styleable.StyleAbelSlider_SliderImage, R.drawable.icon_shutter_thanos_blast));// Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), picID), this.getHeight(), this.getHeight(), false);
             getPosToDraw();
         }
         if (sliderImage != null)
@@ -111,13 +113,14 @@ public class StyleAbelSlider extends View
         int val;
         if (horizontal)
         {
-            val = posi / max * current;
+            int i = getWidth()/max;
+            val = posi/i;
         }
         else
         {
-            val = posi / max * current;
+            int i = getHeight()/max;
+            val = posi/i;
         }
-        current = val;
         return val;
     }
 
@@ -126,6 +129,7 @@ public class StyleAbelSlider extends View
         if (pos <= max && pos >= min)
         {
             current = pos;
+            getPosToDraw();
             invalidate();
         }
     }
@@ -135,6 +139,7 @@ public class StyleAbelSlider extends View
         this.max = max;
         if (current > max)
             current = max;
+        getPosToDraw();
         invalidate();
     }
 
@@ -153,6 +158,11 @@ public class StyleAbelSlider extends View
             Rect tmp = new Rect(0, val - half , getWidth(), getWidth() + val - half);
             if (tmp.top >= 0 && tmp.bottom <= getHeight())
                 drawPosition = tmp;
+        }
+        if (current != getValueFromDrawingPos(val))
+        {
+            current = getValueFromDrawingPos(val);
+            throwvalueHasChanged(current);
         }
     }
 
@@ -192,5 +202,11 @@ public class StyleAbelSlider extends View
                 break;
         }
         return throwevent;
+    }
+
+    private void throwvalueHasChanged(int value)
+    {
+        if (valueHasChanged != null)
+            valueHasChanged.ValueHasChanged(value);
     }
 }

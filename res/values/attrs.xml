@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="StyleAbelSlider">
-        <attr name="SliderImage" format="integer" />
+        <attr name="SliderImage" format="reference|color" />
         <attr name="SliderHeight" format="integer" />
         <attr name="SliderWidth" format="integer" />
         <attr name="horizontal" format="boolean" />

@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res/com.troop.freecam"
+    xmlns:custom="http://schemas.android.com/apk/res/com.troop.freecam"
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".ControlsTestActivity"
     android:background="#9b9b9b">
 
-    <com.troop.freecam.controls.StyleAbelSlider
-        app:SliderImage="@drawable/icon_shutter_thanos_blast"
-        app:horizontal="true"
-        app:SliderHeight="100"
-        app:SliderWidth="100"
 
+
+    <com.troop.freecam.controls.StyleAbelSlider
         android:layout_width="wrap_content"
         android:layout_height="@android:dimen/app_icon_size"
-        android:id="@+id/view2"
+        android:id="@+id/viewSlider"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
         android:background="@drawable/ic_seek_bar_background"
-        android:visibility="visible" />
+        custom:horizontal="true"
+        custom:SliderImage="@drawable/icon_shutter_thanos_blast"
+        android:layout_alignParentRight="true" />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/textView"
+        android:layout_below="@+id/viewSlider"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="31dp" />
+
+    <com.troop.freecam.controls.StyleAbelSlider
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="wrap_content"
+        android:id="@+id/view"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_seek_bar_background"
+        custom:horizontal="false"
+        android:layout_below="@+id/viewSlider" />
+
+
+</RelativeLayout>
