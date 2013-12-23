@@ -38,7 +38,7 @@ public class StyleAbelSlider extends View
     boolean horizontal;
 
     int picID;
-    TypedArray a;
+
 
     public IStyleAbleSliderValueHasChanged valueHasChanged;
 
@@ -61,12 +61,14 @@ public class StyleAbelSlider extends View
     private void init(Context context, AttributeSet attrs)
     {
         this.context = context;
-        a = context.getTheme().obtainStyledAttributes(
+        TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.StyleAbelSlider,
                 0, 0);
 
         horizontal = a.getBoolean(R.styleable.StyleAbelSlider_horizontal, false);
+        picID = a.getResourceId(R.styleable.StyleAbelSlider_SliderImage, R.drawable.icon_shutter_thanos_blast);
+        a.recycle();
         min = 0;
         max = 100;
         current = 50;
@@ -78,7 +80,7 @@ public class StyleAbelSlider extends View
 
         if (sliderImage == null)
         {
-            sliderImage = getResources().getDrawable(a.getResourceId(R.styleable.StyleAbelSlider_SliderImage, R.drawable.icon_shutter_thanos_blast));// Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), picID), this.getHeight(), this.getHeight(), false);
+            sliderImage = getResources().getDrawable(picID);// Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), picID), this.getHeight(), this.getHeight(), false);
             getPosToDraw();
         }
         if (sliderImage != null)

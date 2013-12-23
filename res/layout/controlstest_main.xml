@@ -42,5 +42,17 @@
         custom:horizontal="false"
         android:layout_below="@+id/viewSlider" />
 
+    <com.troop.freecam.controls.ExtendedButton
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        custom:StringTop="Test"
+        custom:StringBot="TestBOt"
+        android:id="@+id/view2"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_marginTop="88dp"
+
+        android:clickable="true" />
+
 
 </RelativeLayout>
