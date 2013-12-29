@@ -19,20 +19,19 @@ public class TwoDBitmapHandler extends BaseBitmapHandler
     JniBitmapHolder baseJni;
     JniBitmapHolder highJni;
     JniBitmapHolder lowJni;
+    HdrRenderActivity activity;
 
     public TwoDBitmapHandler(Activity activity, Uri[] uris) {
         super(activity, uris);
+        this.activity = (HdrRenderActivity) activity;
     }
 
     public String render2d(String end, File sdcardpath)
     {
-        System.gc();
-        Runtime.getRuntime().gc();
-        System.gc();
-
         baseJni.ToneMapImages(highJni, lowJni);
         highJni.freeBitmap();
         lowJni.freeBitmap();
+
         Bitmap bitmap = baseJni.getBitmapAndFree();
 
         File file = SavePictureTask.getFilePath(end, sdcardpath);
@@ -54,6 +53,12 @@ public class TwoDBitmapHandler extends BaseBitmapHandler
             baseJni.cropBitmap(base.X, base.Y, base.Width + base.X, base.Y + base.Height);
             highJni.cropBitmap(first.X, first.Y, first.Width + first.X, first.Y + first.Height);
             lowJni.cropBitmap(second.X, second.Y, second.X + second.Width, second.Y + second.Height);
+            if (activity.preferences.getBoolean("upsidedown", false))
+            {
+                baseJni.rotateBitmap180();
+                highJni.rotateBitmap180();
+                lowJni.rotateBitmap180();
+            }
         }
         catch (OutOfMemoryError ex)
         {

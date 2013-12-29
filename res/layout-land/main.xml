@@ -18,16 +18,14 @@
             android:id="@+id/camPreview1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:visibility="gone" />
+            android:layout_alignParentTop="true" />
 
         <view
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             class="com.troop.freecam.manager.Drawing.DrawingOverlaySurface"
             android:id="@+id/view"
-            android:alpha="0.5"
-            android:visibility="gone" />
+            android:alpha="0.5" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -542,21 +540,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginLeft="17dp" />
-            android:layout_height="wrap_content"
-            android:id="@+id/imageViewFMet"
-            android:background="@drawable/icon_meter_matrix"
-            android:layout_below="@+id/textView"
-            android:layout_toRightOf="@+id/linearLayout" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageViewEMet"
-            android:background="@drawable/icon_meter_matrix"
-            android:layout_alignTop="@+id/imageViewFMet"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_alignStart="@+id/textView2" />
-
 
             <ImageButton
                 android:id="@+id/imageButton1"
@@ -583,7 +566,8 @@
             android:layout_height="15dp"
             android:id="@+id/LayoutQuickMenu"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/CameraControls">
+            android:layout_toLeftOf="@+id/CameraControls"
+            android:visibility="invisible">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -695,6 +679,14 @@
 
         </LinearLayout>
 
+        <view
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            class="com.troop.freecam.manager.sliders.ManualISO"
+            android:id="@+id/sliderisoview"
+            android:background="@drawable/sliderback"
+            android:layout_alignBottom="@+id/QuickISO" />
+
     </RelativeLayout>
 
 
@@ -714,6 +706,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="false"
         android:layout_alignParentTop="true" />
+
+    <FrameLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentEnd="false"
+        android:background="@drawable/melanie"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="90dp"
+        android:id="@+id/Settings"
+        android:visibility="invisible"></FrameLayout>
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -891,431 +893,6 @@
         </TableRow>
 
     </TableLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/baseMenuLayout"
-        android:longClickable="false"
-        android:measureWithLargestChild="false"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="@android:dimen/app_icon_size"
-            android:layout_height="wrap_content"
-            android:background="@drawable/camera_frame_box_ver_bg">
-
-            <Button
-                android:layout_width="@android:dimen/app_icon_size"
-                android:layout_height="@android:dimen/app_icon_size"
-                android:id="@+id/buttonManualMode"
-                android:background="@drawable/icon_manual_set" />
-
-            <Button
-                android:layout_width="@android:dimen/app_icon_size"
-                android:layout_height="@android:dimen/app_icon_size"
-                android:id="@+id/buttonAutoMode"
-                android:background="@drawable/icon_auto_set"
-                android:layout_marginTop="2dp" />
-
-            <Button
-                android:layout_width="@android:dimen/app_icon_size"
-                android:layout_height="@android:dimen/app_icon_size"
-                android:id="@+id/buttonSettingsMode"
-                android:background="@drawable/icon_settings"
-                android:layout_marginTop="2dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="@android:dimen/app_icon_size"
-                android:id="@+id/Layout_Manual"
-                android:focusableInTouchMode="false"
-                android:orientation="horizontal"
-            android:layout_marginLeft="50dp"
-            android:background="@drawable/camera_frame_box_ver_bg">
-            android:layout_marginLeft="50dp">
-
-                <CheckBox
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/checkBox_brightness"
-                    android:background="@drawable/icon_manual_brightnes"
-                    android:textColor="#ff0000"
-                    android:singleLine="false" />
-
-                <CheckBox
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/checkBox_contrast"
-                    android:background="@drawable/icon_manual_contrast" />
-
-                <CheckBox
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/checkBox_exposureManual"
-                    android:background="@drawable/icon_manual_exposure"
-                    android:textColor="#ff0000"
-                     />
-
-                <CheckBox
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/checkBox_focus"
-                    android:background="@drawable/icon_manual_focus" />
-
-                <CheckBox
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/checkBox_saturation"
-                    android:background="@drawable/icon_manual_saturation"
-                    android:checked="false"
-                    android:textColor="#ff0000"
-                     />
-
-                <CheckBox
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/checkBox_sharpness"
-                    android:background="@drawable/icon_manual_sharpness"
-                    android:textColor="#ff0000"
-                     />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="@android:dimen/app_icon_size"
-                android:id="@+id/LayoutAuto"
-                android:background="@drawable/camera_frame_box_ver_bg"
-                android:layout_marginTop="50dp">
-
-                <Button
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/buttonAFPriority"
-                    android:background="@drawable/icon_auto_af_priority"
-                    android:singleLine="true"
-                    android:textColor="#ff1100"
-                    android:textStyle="bold"
-                    android:typeface="serif"
-                    android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                    android:layout_gravity="center_vertical" />
-
-                <Button
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/buttoncolor"
-                    android:background="@drawable/icon_auto_effect"
-                    android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                    android:textColor="#ff1100"
-                    android:textStyle="bold"
-                    android:typeface="serif"
-                    android:layout_gravity="center_vertical" />
-
-                <Button
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/button_exposure"
-                    android:background="@drawable/icon_auto_exposure"
-                    android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                    android:textColor="#ff1100"
-                    android:textStyle="bold"
-                    android:singleLine="true"
-                    android:typeface="serif"
-                    android:layout_gravity="center_vertical" />
-
-                <Button
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/buttoniso"
-                    android:background="@drawable/icon_auto_iso"
-                    android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                    android:textColor="#ff1100"
-                    android:textStyle="bold"
-                    android:typeface="serif"
-                    android:singleLine="true"
-                    android:textSize="@dimen/TextSizeSmall"
-                    android:layout_gravity="center_vertical" />
-
-                <Button
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/buttonMetering"
-                    android:background="@drawable/icon_auto_metering"
-                    android:textSize="@dimen/TextSizeSmall"
-                    android:singleLine="true"
-                    android:textColor="#ff1100"
-                    android:textStyle="bold"
-                    android:typeface="serif"
-                    android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                    android:layout_gravity="center_vertical" />
-
-                <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/buttonScene"
-                        android:background="@drawable/icon_auto_scene"
-                        android:clickable="true"
-                    android:textColor="#ff1100"
-                    android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                    android:textStyle="bold"
-                    android:singleLine="true"
-                    android:typeface="serif"
-                    android:layout_gravity="center_vertical" />
-
-                <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/buttonwhiteBalance"
-                        android:background="@drawable/icon_auto_wb"
-                    android:textColor="#ff1100"
-                    android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                    android:textStyle="bold"
-                    android:singleLine="true"
-                    android:typeface="serif"
-                    android:layout_gravity="center_vertical" />
-
-                <CheckBox
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/checkBox_hdr"
-                    android:background="@drawable/icon_hdr"
-                    android:singleLine="true"
-                    android:textColor="#ff2141"
-                    android:layout_gravity="center_vertical" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/LayoutSettings"
-                android:background="@drawable/camera_frame_box_ver_bg"
-                android:longClickable="false"
-            android:measureWithLargestChild="false">
-                android:layout_marginTop="98dp">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/button_switch3d"
-                        android:background="@drawable/icon_settings_cam_select"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:singleLine="true"
-                        android:typeface="serif" />
-
-                    <CheckBox
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/checkBoxOnscreen"
-                        android:background="@drawable/icon_settings_onscreeni"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:singleLine="true" />
-
-                <Button
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/buttonCamerMode"
-                    android:background="@drawable/icon_camera_mode" />
-
-                <Button
-                    android:layout_width="@android:dimen/app_icon_size"
-                    android:layout_height="@android:dimen/app_icon_size"
-                    android:id="@+id/buttonComposition"
-                    android:background="@drawable/icon_composition" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <Button
-                            android:layout_width="@android:dimen/app_icon_size"
-                            android:layout_height="@android:dimen/app_icon_size"
-                            android:id="@+id/button_flash"
-                            android:background="@drawable/icon_settings_flash_mode"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:singleLine="true"
-                        android:typeface="serif" />
-
-                    <Button
-                            android:layout_width="@android:dimen/app_icon_size"
-                            android:layout_height="@android:dimen/app_icon_size"
-                            android:id="@+id/button_focus"
-                            android:background="@drawable/icon_auto_focus"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:typeface="serif" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/button_pictureFormat"
-                        android:background="@drawable/icon_settings_picture_format"
-                        android:singleLine="true"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:textColor="#ff1100"
-                        android:textStyle="bold"
-                        android:typeface="serif" />
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/button_pictureSize"
-                        android:background="@drawable/icon_settings_picture_size"
-                        android:textColor="#ff1100"
-
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:singleLine="true"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small" />
-
-                    android:layout_alignParentEnd="true"
-                    android:visibility="gone" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/buttonPreviewFormat"
-                        android:background="@drawable/icon_settings_preview_format"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small" />
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/button_previewsize"
-                        android:background="@drawable/icon_settings_preview_size"
-                        android:textColor="#ff1100"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:singleLine="true"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/button_ipp"
-                        android:background="@drawable/icon_settings_ipp"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:singleLine="true"
-                        android:textStyle="bold"
-                        android:typeface="serif" />
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/button_denoise"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:background="@drawable/icon_settings_denoise"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <CheckBox
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/button_fixupsidedown"
-                        android:background="@drawable/icon_settings_picture_rotate"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:textColor="#ff2141" />
-
-                    <CheckBox
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/checkBox_crop"
-                        android:background="@drawable/icon_settings_crop"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:singleLine="true" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/buttonStab"
-                        android:background="@drawable/icon_stab_video"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small" />
-
-                    <Button
-                        android:layout_width="@android:dimen/app_icon_size"
-                        android:layout_height="@android:dimen/app_icon_size"
-                        android:id="@+id/buttonZsl"
-                        android:background="@drawable/icon_settings_zsl"
-                        android:textSize="@dimen/TextSizeSmall"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textColor="#ff1100"
-                        android:textAppearance="@android:style/TextAppearance.Holo.Small" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
 
 
 </RelativeLayout>

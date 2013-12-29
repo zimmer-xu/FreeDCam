@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 
 import android.R.integer;
+import android.R.string;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -37,6 +38,7 @@ public class JniBitmapHolder
   private native int jniWidth(ByteBuffer buffer);
   private native int jniHeight(ByteBuffer buffer);
   private native void jniSave(ByteBuffer buffer,FileOutputStream outstreamFileOutputStream);
+  private native ByteBuffer jniLoadFromPath(String path);
 
   public JniBitmapHolder()
     {}
@@ -45,6 +47,11 @@ public class JniBitmapHolder
     {
     storeBitmap(bitmap);
     }
+  
+  public JniBitmapHolder(final String path)
+  {
+	  loadFromPath(path);
+  }
   
   public void AddImageIntoExisting(ByteBuffer nioBuffer, int x, int y)
   {
@@ -55,23 +62,23 @@ public class JniBitmapHolder
   
   public int getWidth()
   {
-         if(_handler==null)
-                return 0;
+	  if(_handler==null)
+		return 0;
          return jniWidth(_handler);
   }
   
   public int getHeight()
   {
-         if(_handler==null)
-                        return 0;
+	  if(_handler==null)
+			return 0;
          return jniHeight(_handler);
   }
   
   public void Save(FileOutputStream outputStream)
   {
-         if(_handler == null)
-                 return;
-         jniSave(_handler, outputStream);
+	  if(_handler == null)
+		  return;
+	  jniSave(_handler, outputStream);
   }
   
   public void ToneMapImages(JniBitmapHolder high, JniBitmapHolder low)
@@ -85,6 +92,15 @@ public class JniBitmapHolder
       freeBitmap();
     _handler=jniStoreBitmapData(bitmap);
     }
+  
+  public void loadFromPath(String path)
+  {
+	  if (_handler != null) 
+	  {
+		  freeBitmap();
+	  }
+	  _handler = jniLoadFromPath(path);
+  }
   
 
   public void rotateBitmapCcw90()

@@ -7,6 +7,7 @@ import android.widget.PopupMenu;
 import com.troop.freecam.CameraManager;
 import com.troop.freecam.MainActivity;
 import com.troop.freecam.manager.ParametersManager;
+import com.troop.freecam.utils.DeviceUtils;
 
 /**
  * Created by George on 12/6/13.
@@ -29,10 +30,10 @@ public class AFPriorityMenu extends BaseMenu  {
         PopupMenu popupMenu = new PopupMenu(activity, canvasView);
 
         if(camMan.Running && camMan.parametersManager.getSupportAfpPriority())
-            if (CameraManager.isQualcomm() == true){
-            modes = camMan.parametersManager.getParameters().get("selectable-zone-af-values").split(",");
+            if (DeviceUtils.isQualcomm())
+                modes = camMan.parametersManager.getParameters().get("selectable-zone-af-values").split(",");
             }
-            if (CameraManager.isOmap() == true){
+            if (DeviceUtils.isOmap())
                 modes = camMan.parametersManager.getParameters().get("auto-convergence-mode-values").split(",");
             }
             if (CameraManager.isSony() == true)
@@ -52,9 +53,9 @@ public class AFPriorityMenu extends BaseMenu  {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     String tmp = item.toString();
-                    if (CameraManager.isQualcomm() == true){
+                    if (DeviceUtils.isQualcomm())
                         camMan.parametersManager.getParameters().set("selectable-zone-af", tmp);
-                    }
+                    if (DeviceUtils.isOmap())
                     if (CameraManager.isOmap() == true){
                         camMan.parametersManager.getParameters().set("auto-convergence-mode", tmp);
                     }
@@ -66,10 +67,9 @@ public class AFPriorityMenu extends BaseMenu  {
                     activity.OnScreenFocusValue.setText("AFP:"+ tmp);
                     activity.buttonAfPriority.setText(tmp);
 
-                    String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_3D);
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_2D))
+                    if (camMan.parametersManager.is2DMode())
                         preferences.edit().putString(ParametersManager.Preferences_AFPValue, tmp).commit();
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_Front))
+                    if (camMan.parametersManager.isFrontMode())
                         preferences.edit().putString(ParametersManager.Preferences_AFPValue, tmp).commit();
                     //preferences.edit().putString("focus", tmp).commit();
 

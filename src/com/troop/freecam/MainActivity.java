@@ -25,6 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,56 +33,57 @@ import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import com.troop.freecam.manager.Drawing.DrawingOverlaySurface;
 import com.troop.freecam.manager.ManualSaturationManager;
 import com.troop.freecam.manager.MyTimer;
 import com.troop.freecam.manager.ParametersManager;
 import com.troop.freecam.manager.interfaces.ParametersChangedInterface;
-import com.troop.menu.AFPriorityMenu;
-import com.troop.menu.ColorMenu;
-import com.troop.menu.DenoiseMenu;
-import com.troop.menu.ExposureMenu;
-import com.troop.menu.FlashMenu;
-import com.troop.menu.FocusMenu;
-import com.troop.menu.IppMenu;
-import com.troop.menu.IsoMenu;
-import com.troop.menu.MeteringMenu;
-import com.troop.menu.PictureFormatMenu;
-import com.troop.menu.PictureSizeMenu;
-import com.troop.menu.PreviewFormatMenu;
-import com.troop.menu.PreviewSizeMenu;
-import com.troop.menu.SceneMenu;
-import com.troop.menu.WhiteBalanceMenu;
-import com.troop.menu.ZslMenu;
-import com.troop.menu.switchcameramenu;
+import com.troop.freecam.manager.sliders.ManualISO;
+import com.troop.freecam.manager.interfaces.IStyleAbleSliderValueHasChanged;
+import com.troop.freecam.utils.DeviceUtils;
+
 
 import java.io.File;
 
 public class MainActivity extends Activity implements ParametersChangedInterface
 {
+
+    //:::::::::::::::::::::::::Buttons::::::::::::::::::::::::::::::::::::::::;;
+
+    Button ex_button_settings_view;
+    Button ex_button_motion_frame_view;
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    //::::::::::::::::::::::::::Layouts:::::::::::::::::::::::::::::::::::::::::
+    LinearLayout ex_layout_quicksettings;
+
+    FrameLayout ex_layout_settings;
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;:
+
+
+    //::::::::::::::::::::::::::Seekbars:::::::::::::::::::::::::
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    //::::::::::::::::::::::::::::::Imageviews::::::::::::::::::::::::::
+    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    //::::::::::::::::::::::::: Parameters ::::::::::::::::::::::
+    int StateQuickSet = 0;
+    int StateSettings = 0 ;
+    int StateOnScreenInfo = 0;
+    ManualISO slider;
+    TextView values;
+
+
+    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
 	public CamPreview mPreview;
     public DrawingOverlaySurface drawSurface;
 	public ImageButton shotButton;
-	public Button flashButton;
-    public Button focusButton;
-    public Button sceneButton;
-    public Button whitebalanceButton;
-    public Button colorButton;
-    public Button isoButton;
-    public Button exposureButton;
-    public Button switch3dButton;
-    public Button pictureSizeButton;
-    public Button previewSizeButton;
-    public Button ippButton;
-
-    //06-12-13***********
-    public Button buttonAfPriority;
-    public Button buttonMetering;
-    public Button buttonPictureFormat;
-    public Button buttonPreviewFormat;
-    public CheckBox checkBoxOnScreen;
-    public CheckBox checkBoxZSL;
     //*******************
 	Camera.Parameters paras;
     SurfaceHolder holder;
@@ -120,7 +122,6 @@ public class MainActivity extends Activity implements ParametersChangedInterface
     public SeekBar exposureSeekbar;
     public ImageButton thumbButton;
 
-    public Boolean AFS_enable;
 
     public CheckBox manualExposure;
     TableRow exposureRow;
@@ -152,18 +153,7 @@ public class MainActivity extends Activity implements ParametersChangedInterface
     TableRow saturationRow;
 
     Button switchVideoPicture;
-    Button AfAssitButton;
 
-    Button manualLayoutButton;
-    Button autoLayoutButton;
-    Button settingLayoutButton;
-    LinearLayout baseMenuLayout;
-    LinearLayout manualMenuLayout;
-    LinearLayout autoMenuLayout;
-    LinearLayout settingsMenuLayout;
-    public boolean hideManualMenu = true;
-    public boolean hideSettingsMenu = true;
-    public boolean hideAutoMenu = true;
     SharedPreferences preferences;
     CheckBox upsidedown;
     public boolean recordVideo = false;
@@ -182,9 +172,6 @@ public class MainActivity extends Activity implements ParametersChangedInterface
     CheckBox checkboxHDR;
     boolean HDRMode = false;
 
-    public Button button_zsl;
-    public Button button_denoise;
-    public Button button_stab;
     View view;
 
     //private final int DEFAULT_SYSTEM_UI_VISIBILITY = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -219,152 +206,84 @@ public class MainActivity extends Activity implements ParametersChangedInterface
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        //List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
 
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
+        //Sliders//
+        values = (TextView)findViewById(R.id.textView);
+        slider = (ManualISO)findViewById(R.id.viewSlider);
+
+        slider.valueHasChanged = new IStyleAbleSliderValueHasChanged()
+        {
+            @Override
+            public void ValueHasChanged(int value)
+            {
+                String s = value + "";
+                values.setText(s);
+            }
+        };
+        //end//
 
         initButtons();
         initMenu();
         recordTimer = new MyTimer(recordingTimerTextView);
-        chipsetProp();
-        onScreenText();
-        showtext();
+        hidenavkeys();
 
 
-        hideCurrentConfig();
+
+        onScreenText(StateOnScreenInfo);
+
+
 
 	}
 
-   /* @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        getWindow().getDecorView()
-                .setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        //Check the event and do magic here, such as...
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
-
-        }
-
-        //Be careful not to override the return unless necessary
-        return super.dispatchTouchEvent(event);
-    } */
-
-    public void videoui()
-    {
-
-
-    }
 
     public void initMenu()
     {
 
-        baseMenuLayout = (LinearLayout)findViewById(R.id.baseMenuLayout);
-        autoMenuLayout = (LinearLayout)findViewById(R.id.LayoutAuto);
-        manualMenuLayout = (LinearLayout)findViewById(R.id.Layout_Manual);
-        settingsMenuLayout = (LinearLayout)findViewById(R.id.LayoutSettings);
+        ex_layout_quicksettings = (LinearLayout)findViewById(R.id.LayoutQuickMenu);
+        ex_layout_settings = (FrameLayout)findViewById(R.id.Settings);
 
-
-        manualLayoutButton = (Button)findViewById(R.id.buttonManualMode);
-        manualLayoutButton.setOnClickListener(new View.OnClickListener() {
+        ex_button_settings_view = (Button)findViewById(R.id.buttonSettingsView);
+        ex_button_settings_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                if (hideManualMenu == false)
+                if (StateQuickSet == 0)
                 {
-                    hideManualMenu = true;
-                    baseMenuLayout.removeView(manualMenuLayout);
+                    ex_layout_quicksettings.setVisibility(View.VISIBLE);
+                    findViewById(R.id.QuickISO).setVisibility(View.VISIBLE);
+                    StateQuickSet = 1;
                 }
                 else
                 {
-                    hideManualMenu = false;
-                    if (baseMenuLayout.findViewById(R.id.Layout_Manual) == null)
-                        baseMenuLayout.addView(manualMenuLayout);
-                    if (hideAutoMenu == false)
-                    {
-                        hideAutoMenu = true;
-                        baseMenuLayout.removeView(autoMenuLayout);
-                    }
-                    if (hideSettingsMenu == false)
-                    {
-                        hideSettingsMenu = true;
-                        baseMenuLayout.removeView(settingsMenuLayout);
-                    }
+                    ex_layout_quicksettings.setVisibility(View.INVISIBLE);
+                    findViewById(R.id.QuickISO).setVisibility(View.INVISIBLE);
+                    StateQuickSet = 0;
                 }
 
             }
-        });
 
-        autoLayoutButton = (Button)findViewById(R.id.buttonAutoMode);
-        autoLayoutButton.setOnClickListener(new View.OnClickListener() {
+
+        });
+        ex_button_settings_view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (hideAutoMenu == false)
-                {
-                    hideAutoMenu = true;
-
-                    baseMenuLayout.removeView(autoMenuLayout);
+            public boolean  onLongClick(View v) {
+                if (StateSettings == 0) {
+                    ex_layout_settings.setVisibility(View.VISIBLE);
+                    StateSettings = 1;
+                } else {
+                    ex_layout_settings.setVisibility(View.INVISIBLE);
+                    StateSettings = 0;
                 }
-                else
-                {
-                    hideAutoMenu = false;
-                    if (baseMenuLayout.findViewById(R.id.LayoutAuto) == null)
-                        baseMenuLayout.addView(autoMenuLayout);
-
-                    if (hideSettingsMenu == false)
-                    {
-                        hideSettingsMenu = true;
-                        baseMenuLayout.removeView(settingsMenuLayout);
-                    }
-                    if (hideManualMenu == false)
-                    {
-                        hideManualMenu = true;
-                        baseMenuLayout.removeView(manualMenuLayout);
-                    }
-
-                }
+                return true;
 
             }
-        });
-        settingLayoutButton = (Button)findViewById(R.id.buttonSettingsMode);
-        settingLayoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                if (hideSettingsMenu == false)
-                {
-                    hideSettingsMenu = true;
-                    baseMenuLayout.removeView(settingsMenuLayout);
-                }
-                else
-                {
-                    hideSettingsMenu = false;
-                    if (baseMenuLayout.findViewById(R.id.LayoutSettings) == null)
-                        baseMenuLayout.addView(settingsMenuLayout);
-                    if (hideAutoMenu == false)
-                    {
-                        hideAutoMenu = true;
-                        baseMenuLayout.removeView(autoMenuLayout);
-                    }
-                    if (hideManualMenu == false)
-                    {
-                        hideManualMenu = true;
-                        baseMenuLayout.removeView(manualMenuLayout);
-                    }
 
-                }
 
-            }
         });
 
-        baseMenuLayout.removeView(autoMenuLayout);
-        baseMenuLayout.removeView(manualMenuLayout);
-        baseMenuLayout.removeView(settingsMenuLayout);
-
-        if(!preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_3D).equals(ParametersManager.SwitchCamera_MODE_3D))
+        if(!preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_2D).equals(ParametersManager.SwitchCamera_MODE_3D))
         {
-            settingsMenuLayout.removeView(crop_box);
+            crop_box.setVisibility(View.GONE);
         }
         else
         {
@@ -375,49 +294,11 @@ public class MainActivity extends Activity implements ParametersChangedInterface
 
     public void initButtons()
     {
-        flashButton = (Button) findViewById(R.id.button_flash);
-        flashButton.setOnClickListener(new FlashMenu(camMan, this));
+
         shotButton = (ImageButton) findViewById(R.id.imageButton1);
         shotButton.setOnClickListener(shotListner);
-        AfAssitButton = (Button)findViewById(R.id.button_af_assit);
-        AfAssitButton.setOnClickListener(AFSListner);
-        focusButton = (Button) findViewById(R.id.button_focus);
-        focusButton.setOnClickListener(new FocusMenu(camMan, this));
-        sceneButton = (Button) findViewById(R.id.buttonScene);
-        sceneButton.setOnClickListener(new SceneMenu(camMan, this));
-        whitebalanceButton = (Button) findViewById(R.id.buttonwhiteBalance);
-        whitebalanceButton.setOnClickListener(new WhiteBalanceMenu(camMan, this));
-        colorButton = (Button) findViewById(R.id.buttoncolor);
-        colorButton.setOnClickListener(new ColorMenu(camMan, this));
-        isoButton = (Button) findViewById(R.id.buttoniso);
-        isoButton.setOnClickListener(new IsoMenu(camMan, this));
-        exposureButton = (Button) findViewById(R.id.button_exposure);
-        exposureButton.setOnClickListener(new ExposureMenu(camMan, this));
-        pictureSizeButton = (Button) findViewById(R.id.button_pictureSize);
-        pictureSizeButton.setOnClickListener(new PictureSizeMenu(camMan, this));
-        previewSizeButton = (Button)findViewById(R.id.button_previewsize);
-        previewSizeButton.setOnClickListener(new PreviewSizeMenu(camMan,this));
-
-        //06-12-13*************************************************************
-        buttonAfPriority = (Button)findViewById(R.id.buttonAFPriority);
-        buttonAfPriority.setOnClickListener(new AFPriorityMenu(camMan,this));
 
 
-        buttonMetering = (Button)findViewById(R.id.buttonMetering);
-        buttonMetering.setOnClickListener(new MeteringMenu(camMan,this));
-
-
-        buttonPictureFormat = (Button)findViewById(R.id.button_pictureFormat);
-        buttonPictureFormat.setOnClickListener(new PictureFormatMenu(camMan,this));
-
-        buttonPreviewFormat = (Button)findViewById(R.id.buttonPreviewFormat);
-        buttonPreviewFormat.setOnClickListener(new PreviewFormatMenu(camMan,this));
-        //**********************************************************************
-
-
-
-        ippButton = (Button)findViewById(R.id.button_ipp);
-        ippButton.setOnClickListener(new IppMenu(camMan, this));
 
         crop_box = (CheckBox)findViewById(R.id.checkBox_crop);
         crop_box.setOnClickListener(new View.OnClickListener() {
@@ -437,10 +318,6 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             }
         });
 
-
-        //exposureSeekbar.setVisibility(View.INVISIBLE);
-        switch3dButton = (Button) findViewById(R.id.button_switch3d);
-        switch3dButton.setOnClickListener(new switchcameramenu(camMan, this));
         thumbButton = (ImageButton)findViewById(R.id.imageButton_thumb);
         thumbButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -459,138 +336,9 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             }
         });
 
-        tableLayout = (TableLayout) findViewById(R.id.tableVIEW);
+       upsidedown = (CheckBox) findViewById(R.id.button_fixupsidedown);
 
-
-        exposureTextView = (TextView) findViewById(R.id.textViewexposure);
-        exposureSeekbar  = (SeekBar) findViewById(R.id.seekBar_exposure);
-        exposureSeekbar.setProgress(30);
-        exposureSeekbar.setOnSeekBarChangeListener(camMan.manualExposureManager);
-        exposureRow = (TableRow) findViewById(R.id.tableRowExposure);
-        tableLayout.removeView(exposureRow);
-        manualExposure = (CheckBox)findViewById(R.id.checkBox_exposureManual);
-        manualExposure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                if (manualExposure.isChecked())
-                {
-                    tableLayout.addView(exposureRow);
-                }
-                else
-                {
-                    tableLayout.removeView(exposureRow);
-                }
-            }
-        });
-
-
-        sharpnessTextView = (TextView)findViewById(R.id.textView_sharpness);
-        sharpnessSeekBar = (SeekBar)findViewById(R.id.seekBar_sharpness);
-        sharpnessSeekBar.setProgress(100);
-        sharpnessSeekBar.setOnSeekBarChangeListener(camMan.manualSharpnessManager);
-        sharpnessRow = (TableRow) findViewById(R.id.tableRowSharpness);
-        tableLayout.removeView(sharpnessRow);
-        manualShaprness = (CheckBox) findViewById(R.id.checkBox_sharpness);
-        manualShaprness.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (manualShaprness.isChecked())
-                {
-                    tableLayout.addView(sharpnessRow);
-                    //manualShaprness.setVisibility(View.VISIBLE);
-
-                    //sharpnessRow.bringToFront();
-                }
-                else
-                {
-                    tableLayout.removeView(sharpnessRow);
-                }
-                //sharpnessRow.invalidate();
-            }
-        });
-
-        //********************ManualFocus******************************************
-        focusRow = (TableRow)findViewById(R.id.tableRowFocus);
-        focusSeekBar = (SeekBar)findViewById(R.id.seekBarFocus);
-        focusSeekBar.setMax(60);
-        manualFocus = (CheckBox)findViewById(R.id.checkBox_focus);
-        brightnessTextView = (TextView)(findViewById(R.id.textViewFocus));
-        focusSeekBar.setOnSeekBarChangeListener(camMan.manualFocus);
-
-        manualFocus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (manualFocus.isChecked())
-
-                    tableLayout.addView(focusRow);
-
-                else
-                    tableLayout.removeView(focusRow);
-                focusButton.setEnabled(true);
-            }
-        });
-        tableLayout.removeView(focusRow);
-
-        //*****************************************End********************************************
-
-        contrastRow = (TableRow)findViewById(R.id.tableRowContrast);
-
-        contrastSeekBar = (SeekBar) findViewById(R.id.seekBar_contrast);
-        contrastSeekBar.setProgress(100);
-        contrastSeekBar.setOnSeekBarChangeListener(camMan.manualContrastManager);
-
-        contrastTextView = (TextView) findViewById(R.id.textView_contrast);
-        contrastcheckBox = (CheckBox)findViewById(R.id.checkBox_contrast);
-        contrastcheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (contrastcheckBox.isChecked())
-                    tableLayout.addView(contrastRow);
-                else
-                    tableLayout.removeView(contrastRow);
-            }
-        });
-        tableLayout.removeView(contrastRow);
-
-
-        brightnessRow = (TableRow)findViewById(R.id.tableRowBrightness);
-        brightnessSeekBar = (SeekBar)findViewById(R.id.seekBar_brightness);
-        brightnessCheckBox = (CheckBox)findViewById(R.id.checkBox_brightness);
-        brightnessTextView = (TextView)(findViewById(R.id.textView_brightness));
-        brightnessSeekBar.setOnSeekBarChangeListener(camMan.manualBrightnessManager);
-
-        brightnessCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (brightnessCheckBox.isChecked())
-                    tableLayout.addView(brightnessRow);
-                else
-                    tableLayout.removeView(brightnessRow);
-            }
-        });
-        tableLayout.removeView(brightnessRow);
-
-        saturationCheckBox = (CheckBox) findViewById(R.id.checkBox_saturation);
-        saturationRow = (TableRow)findViewById(R.id.tableRowsaturation);
-        saturationTextView = (TextView)findViewById(R.id.textViewSaturation);
-        saturationSeekBar = (SeekBar)findViewById(R.id.seekBarSaturation);
-        saturationSeekBar.setProgress(100);
-        saturationSeekBar.setOnSeekBarChangeListener(new ManualSaturationManager(camMan));
-        saturationCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (saturationCheckBox.isChecked())
-                    tableLayout.addView(saturationRow);
-                else
-                    tableLayout.removeView(saturationRow);
-            }
-        });
-        tableLayout.removeView(saturationRow);
-
-        upsidedown = (CheckBox) findViewById(R.id.button_fixupsidedown);
-        boolean upsidedownfix = preferences.getBoolean("upsidedown", false);
-        if (upsidedownfix == true)
+        if (camMan.parametersManager.isOrientationFIX())
             upsidedown.setChecked(true);
         upsidedown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -598,7 +346,7 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             {
                 if (upsidedown.isChecked())
                 {
-                    preferences.edit().putBoolean("upsidedown", true).commit();
+                    camMan.parametersManager.setOrientationFix(true);
                     camMan.Stop();
                     camMan.Start();
 
@@ -606,7 +354,7 @@ public class MainActivity extends Activity implements ParametersChangedInterface
                 }
                 else
                 {
-                    preferences.edit().putBoolean("upsidedown", false).commit();
+                    camMan.parametersManager.setOrientationFix(false);
                     camMan.Stop();
                     camMan.Start();
                     camMan.Restart(true);
@@ -640,65 +388,15 @@ public class MainActivity extends Activity implements ParametersChangedInterface
         mainlayout = (RelativeLayout)findViewById(R.id.mainRelativLayout);
         mainlayout.removeView(recordingTimerTextView);
 
-        checkboxHDR = (CheckBox)findViewById(R.id.checkBox_hdr);
-        checkboxHDR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HDRMode = checkboxHDR.isChecked();
-            }
-        });
 
 
-
-        //06-12-13********************
-
-
-        checkBoxOnScreen = (CheckBox)findViewById(R.id.checkBoxOnscreen);
-        checkBoxOnScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                if (checkBoxOnScreen.isChecked())
-                {
-                    showCurrentConfig();
-                }
-                else
-                {
-                    hideCurrentConfig();
-                }
-            }
-        });
-
-
-        //07-12-13
-       // button_stab = (Button)findViewById(R.id.button_ipp);
-       // button_stab.setOnClickListener(new IppMenu(camMan, this));
-
-        button_denoise = (Button)findViewById(R.id.button_denoise);
-        button_denoise.setOnClickListener(new DenoiseMenu(camMan, this));
-
-        button_zsl = (Button)findViewById(R.id.buttonZsl);
-        button_zsl.setOnClickListener(new ZslMenu(camMan, this));
-
-        /*Hfr Menu****
-        ippButton = (Button)findViewById(R.id.button_ipp);
-        ippButton.setOnClickListener(new IppMenu(camMan, this));
-        */
-
-
-
-
-
-        //*****************************
 
 
     }
 
-    public void onScreenText()
+    public void onScreenText(int x)
     {
         try {
-
-
             OnScreenBrightnessText = (TextView) findViewById(R.id.textViewBrightnessText);
             OnScreenBrightnessValue = (TextView) findViewById(R.id.textViewBrightnessValue);
             OnScreenContrastText = (TextView) findViewById(R.id.textViewContrastText);
@@ -725,37 +423,14 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             OnScreenSharpnessValue = (TextView) findViewById(R.id.textViewSharpValue);
             OnScreenWBText = (TextView) findViewById(R.id.textViewWBText);
             OnScreenWBValue = (TextView) findViewById(R.id.textViewWBValue);
-
-
+            ProbeScreenText(x);
         }
         catch (NullPointerException ex)
         {
-
-
-        }
-    }
-
-
-    public void tabletScaling()
-    {
-        //Will Scale Entire UI For Tablet Mode Current Tabs Nexus 7 / Nexus 10
-    }
-
-
-    public void chipsetProp()
-    {
-        try {
-            String s = Build.MODEL;
-
-            if(CameraManager.isG2() == false)
-                manualFocus.setVisibility(View.GONE);
-
-            if(s.equals("LG-P720") == false || s.equals("LG-P725") == false)
-                upsidedown.setVisibility(View.GONE);
-
-            if (!CameraManager.isOmap())
-                ippButton.setVisibility(View.GONE);
-
+            if(!CameraManager.isG2())
+            if (!CameraManager.isQualcomm())
+                ippButton.setEnabled(false);
+                exposureButton.setEnabled(false);
             if (camMan.parametersManager.getSupportBrightness() == false)
                 brightnessCheckBox.setVisibility(View.GONE);
 
@@ -777,91 +452,27 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             if (CameraManager.isSony() == false || CameraManager.isQualcomm() == false || CameraManager.isG2() == false || CameraManager.isExynos5() == false || CameraManager.isHTC() == false)
                 buttonMetering.setVisibility(View.GONE);
         }
-        catch (NullPointerException ex)
+    }
+
+
+    public void ProbeScreenText (int x)
+    {
+        if (x == 0){
+            findViewById(R.id.linearLayoutOnScreenText).setVisibility(View.VISIBLE);
+            showtext();
+        }
+        else
         {
-
-
-        }
-
-
-    }
-    public void hidenavkeys()
-    {
-        try {
-
-            view.setSystemUiVisibility(2);
-        }
-        catch (NullPointerException ex)
-        {
+            findViewById(R.id.linearLayoutOnScreenText).setVisibility(View.INVISIBLE);
 
         }
-
-
     }
 
-    public void hideCurrentConfig ()
-    {
-        OnScreenBrightnessText.setVisibility(View.INVISIBLE);
-        OnScreenBrightnessValue.setVisibility(View.INVISIBLE);
-        OnScreenContrastText.setVisibility(View.INVISIBLE);
-        OnScreenContrastValue.setVisibility(View.INVISIBLE);
-        OnScreenEVText.setVisibility(View.INVISIBLE);
-        OnScreenEVValue.setVisibility(View.INVISIBLE);
-        OnScreenFlashText.setVisibility(View.INVISIBLE);
-        OnScreenFlashValue.setVisibility(View.INVISIBLE);
-        OnScreenEffectText.setVisibility(View.INVISIBLE);
-        OnScreenEffectValue.setVisibility(View.INVISIBLE);
-        OnScreenFocusText.setVisibility(View.INVISIBLE);
-        OnScreenFocusValue.setVisibility(View.INVISIBLE);
-        OnScreeISOText.setVisibility(View.INVISIBLE);
-        OnScreeISOValue.setVisibility(View.INVISIBLE);
-        OnScreeMeterText.setVisibility(View.INVISIBLE);
-        OnScreeMeterValue.setVisibility(View.INVISIBLE);
-        OnScreenSaturationText.setVisibility(View.INVISIBLE);
-        OnScreeSaturationValue.setVisibility(View.INVISIBLE);
-        OnScreeSceneText.setVisibility(View.INVISIBLE);
-        OnScreeSceneValue.setVisibility(View.INVISIBLE);
-        OnScreenPictureText.setVisibility(View.INVISIBLE);
-        OnScreenPictureValue.setVisibility(View.INVISIBLE);
-        OnScreeSharpnessText.setVisibility(View.INVISIBLE);
-        OnScreenSharpnessValue.setVisibility(View.INVISIBLE);
-        OnScreenWBText.setVisibility(View.INVISIBLE);
-        OnScreenWBValue.setVisibility(View.INVISIBLE);
-
-    }
+//:::::::::::::::::::::::::::: Sliders :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-    public void showCurrentConfig ()
-    {
-        OnScreenBrightnessText.setVisibility(View.VISIBLE);
-        OnScreenBrightnessValue.setVisibility(View.VISIBLE);
-        OnScreenContrastText.setVisibility(View.VISIBLE);
-        OnScreenContrastValue.setVisibility(View.VISIBLE);
-        OnScreenEVText.setVisibility(View.VISIBLE);
-        OnScreenEVValue.setVisibility(View.VISIBLE);
-        OnScreenFlashText.setVisibility(View.VISIBLE);
-        OnScreenFlashValue.setVisibility(View.VISIBLE);
-        OnScreenEffectText.setVisibility(View.VISIBLE);
-        OnScreenEffectValue.setVisibility(View.VISIBLE);
-        OnScreenFocusText.setVisibility(View.VISIBLE);
-        OnScreenFocusValue.setVisibility(View.VISIBLE);
-        OnScreeISOText.setVisibility(View.VISIBLE);
-        OnScreeISOValue.setVisibility(View.VISIBLE);
-        OnScreeMeterText.setVisibility(View.VISIBLE);
-        OnScreeMeterValue.setVisibility(View.VISIBLE);
-        OnScreenSaturationText.setVisibility(View.VISIBLE);
-        OnScreeSaturationValue.setVisibility(View.VISIBLE);
-        OnScreeSceneText.setVisibility(View.VISIBLE);
-        OnScreeSceneValue.setVisibility(View.VISIBLE);
-        OnScreenPictureText.setVisibility(View.VISIBLE);
-        OnScreenPictureValue.setVisibility(View.VISIBLE);
-        OnScreeSharpnessText.setVisibility(View.VISIBLE);
-        OnScreenSharpnessValue.setVisibility(View.VISIBLE);
-        OnScreenWBText.setVisibility(View.VISIBLE);
-        OnScreenWBValue.setVisibility(View.VISIBLE);
 
-    }
-
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     public void setSwitchVideoPictureBackground()
     {
@@ -873,6 +484,7 @@ public class MainActivity extends Activity implements ParametersChangedInterface
         else
         {
             switchVideoPicture.setBackgroundResource(R.drawable.icon_picture_mode);
+            shotButton.setBackgroundResource(R.drawable.icon_shutter_thanos_blast);
         }
     }
 
@@ -908,22 +520,7 @@ public class MainActivity extends Activity implements ParametersChangedInterface
 		return true;
 	}
 
-    View.OnClickListener AFSListner = new View.OnClickListener() {
 
-        @Override
-        public void onClick(View v) {
-            if (AFS_enable != true)
-            {
-                AFS_enable = true;
-            }
-            else
-            {
-                AFS_enable = false;
-            }
-
-        }
-    };
-	
 	View.OnClickListener shotListner = new View.OnClickListener() {
 		
 		@Override
@@ -967,13 +564,13 @@ public class MainActivity extends Activity implements ParametersChangedInterface
     {
         if(!preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_2D).equals(ParametersManager.SwitchCamera_MODE_3D))
         {
-            settingsMenuLayout.removeView(crop_box);
+            //settingsMenuLayout.removeView(crop_box);
         }
         else
         {
             try
             {
-            settingsMenuLayout.addView(crop_box);
+            //settingsMenuLayout.addView(crop_box);
             }
             catch (Exception ex)
             {
@@ -1014,9 +611,6 @@ public class MainActivity extends Activity implements ParametersChangedInterface
     public void parametersHasChanged(boolean restarted)
     {
         try{
-
-
-
            if (camMan.parametersManager.getSupportSharpness())
                 sharpnessTextView.setText("Sharpness: " + camMan.parametersManager.getParameters().getInt("sharpness"));
             //if (!parameters.get("exposure").equals("manual"))
@@ -1027,14 +621,10 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             contrastTextView.setText("Contrast: " + camMan.parametersManager.getParameters().get("contrast"));
             saturationTextView.setText("Saturation: " + camMan.parametersManager.getParameters().get("saturation"));
             brightnessTextView.setText("Brightness: " + camMan.parametersManager.getParameters().get("brightness"));
-
-
-            previewSizeButton.setText(camMan.parametersManager.getParameters().getPreviewSize().width + "x" + camMan.parametersManager.getParameters().getPreviewSize().height);
+            //buttonPreviewFormat.setText(camMan.parametersManager.getParameters().get("preview-format"));
+            //sceneButton.setText(camMan.parametersManager.getParameters().getSceneMode());
+            //previewSizeButton.setText(camMan.parametersManager.getParameters().getPreviewSize().width + "x" + camMan.parametersManager.getParameters().getPreviewSize().height);
             String size1 = String.valueOf(camMan.parametersManager.getParameters().getPictureSize().width) + "x" + String.valueOf(camMan.parametersManager.getParameters().getPictureSize().height);
-            pictureSizeButton.setText(size1);
-
-
-            ippButton.setText(camMan.parametersManager.getParameters().get("ipp"));
 
             camMan.manualExposureManager.SetMinMax(camMan.parametersManager.getParameters().getMinExposureCompensation(), camMan.parametersManager.getParameters().getMaxExposureCompensation());
             camMan.manualExposureManager.ExternalSet = true;
@@ -1049,6 +639,7 @@ public class MainActivity extends Activity implements ParametersChangedInterface
                 contrastSeekBar.setMax(180);
                 camMan.manualContrastManager.ExternalSet = true;
                 contrastSeekBar.setProgress(camMan.parametersManager.getParameters().getInt("contrast"));
+
             }
             if (camMan.parametersManager.getSupportBrightness())
             {
@@ -1059,30 +650,20 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             {
                 saturationSeekBar.setMax(180);
             }
-            crop_box.setChecked(preferences.getBoolean("crop", false));
-            if (!camMan.parametersManager.getSupportFlash())
-                settingsMenuLayout.removeView(flashButton);
-            showtext();
+            if (camMan.parametersManager.is3DMode())
+                crop_box.setVisibility(View.VISIBLE);
+            else
+                crop_box.setVisibility(View.GONE);
+            crop_box.setChecked(camMan.parametersManager.doCropping());
 
-            if (!camMan.parametersManager.getSupportAfpPriority())
-                buttonAfPriority.setVisibility(View.GONE);
-            if (!camMan.parametersManager.getSupportAutoExposure())
-            {
-                buttonMetering.setVisibility(View.GONE);
-            }
         }
         catch (NullPointerException ex)
         {
 
         }
-
-
-
-
     }
     public void showtext()
     {
-
         try
         {
             OnScreenBrightnessValue.setText(camMan.parametersManager.getParameters().get("brightness"));
@@ -1098,14 +679,13 @@ public class MainActivity extends Activity implements ParametersChangedInterface
             OnScreenPictureValue.setText(size1);
             OnScreeSceneValue.setText(camMan.parametersManager.getParameters().get("scene-mode"));
             OnScreenWBValue.setText(camMan.parametersManager.getParameters().get("whitebalance"));
-            if (CameraManager.isOmap())
+            if (DeviceUtils.isOmap())
                 OnScreeMeterValue.setText(camMan.parametersManager.getParameters().get("auto-exposure"));
         }
         catch (Exception ex)
         {
 
         }
-
     }
 }
 	

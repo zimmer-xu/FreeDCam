@@ -8,6 +8,7 @@ import com.troop.freecam.CameraManager;
 import com.troop.freecam.MainActivity;
 import com.troop.freecam.manager.OEM.Samsung;
 import com.troop.freecam.manager.ParametersManager;
+import com.troop.freecam.utils.DeviceUtils;
 
 
 /**
@@ -28,9 +29,9 @@ public class IsoMenu extends BaseMenu {
         {
             try
             {
-                if(CameraManager.isOmap() == true){
+                if(DeviceUtils.isOmap())
                     isos = camMan.parametersManager.getParameters().get("iso-mode-values").split(",");
-                }
+                if(DeviceUtils.isQualcomm())
                 if(CameraManager.isQualcomm() == true){
                     isos = camMan.parametersManager.getParameters().get("iso-values").split(",");
                 }
@@ -63,12 +64,11 @@ public class IsoMenu extends BaseMenu {
                         camMan.parametersManager.getParameters().set("sony-iso", tmp);
                     else
                         camMan.parametersManager.getParameters().set("iso", tmp);
-                    String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_3D);
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_3D))
+                    if (camMan.parametersManager.is3DMode())
                         preferences.edit().putString(ParametersManager.Preferences_Iso3D, tmp).commit();
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_2D))
+                    if (camMan.parametersManager.is2DMode())
                         preferences.edit().putString(ParametersManager.Preferences_Iso2D, tmp).commit();
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_Front))
+                    if (camMan.parametersManager.isFrontMode())
                         preferences.edit().putString(ParametersManager.Preferences_IsoFront, tmp).commit();
                     //preferences.edit().putString("color", tmp).commit();
                     camMan.Restart(false);

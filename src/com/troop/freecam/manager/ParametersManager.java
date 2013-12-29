@@ -7,6 +7,7 @@ import com.troop.freecam.CameraManager;
 import com.troop.freecam.MainActivity;
 import com.troop.freecam.manager.interfaces.ParametersChangedInterface;
 import com.troop.freecam.manager.interfaces.PreviewSizeChangedInterface;
+import com.troop.freecam.utils.DeviceUtils;
 
 /**
  * Created by troop on 16.10.13.
@@ -185,10 +186,10 @@ public class ParametersManager
         }
 
         try {
-            if (CameraManager.isQualcomm() == true)
+            if (DeviceUtils.isQualcomm())
                 if(parameters.get("selectable-zone-af-values").length() >= 3)
                     supportAfpPriority = true;
-                else supportAfpPriority = false;
+            if (DeviceUtils.isOmap())
             if (CameraManager.isOmap() == true)
                 if(parameters.get("auto-convergence-mode-values").length() >=3)
                     supportAfpPriority = true;
@@ -241,7 +242,7 @@ public class ParametersManager
 
             parameters.set("ipp",preferences.getString(Preferences_IPP2D, "ldc-nsf"));
 
-            if(CameraManager.isQualcomm())
+            if(DeviceUtils.isQualcomm())
             {
                 parameters.set("denoise","denoise-off");
                 parameters.set("power-mode","Normal_Power");
@@ -389,5 +390,56 @@ public class ParametersManager
     private void setToPreferencesToCamera()
     {
         cameraManager.mCamera.setParameters(parameters);
+    }
+
+    public boolean doCropping()
+    {
+       return preferences.getBoolean("crop", false);
+    }
+
+    public boolean is3DMode()
+    {
+        String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_2D);
+        if (camvalue.equals(ParametersManager.SwitchCamera_MODE_3D))
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean is2DMode()
+    {
+        String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_2D);
+        if (camvalue.equals(ParametersManager.SwitchCamera_MODE_2D))
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean isFrontMode()
+    {
+        String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_2D);
+        if (camvalue.equals(ParametersManager.SwitchCamera_MODE_Front))
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean isOrientationFIX()
+    {
+        if(preferences.getBoolean("upsidedown", false))
+            return true;
+        else
+            return false;
+    }
+
+    public void setOrientationFix(boolean value)
+    {
+        preferences.edit().putBoolean("upsidedown", value).commit();
     }
 }

@@ -7,6 +7,7 @@ import android.widget.PopupMenu;
 import com.troop.freecam.CameraManager;
 import com.troop.freecam.MainActivity;
 import com.troop.freecam.manager.ParametersManager;
+import com.troop.freecam.utils.DeviceUtils;
 
 /**
  * Created by troop on 03.09.13.
@@ -26,9 +27,9 @@ public class ExposureMenu extends BaseMenu {
         {
             try {
 
-                if(CameraManager.isOmap() == true){
+                if(DeviceUtils.isOmap())
                 exposures = camMan.parametersManager.getParameters().get("exposure-mode-values").split(",");
-                }
+                if(DeviceUtils.isQualcomm() || DeviceUtils.isExynos() || DeviceUtils.isTegra())
                 if (CameraManager.isSony() == true)
                 {
                     exposures = camMan.parametersManager.getParameters().get("sony-ae-mode-values").split(",");
@@ -51,22 +52,19 @@ public class ExposureMenu extends BaseMenu {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     String tmp = item.toString();
-                    if(CameraManager.isOmap() == true){
+                    if (camMan.parametersManager.is3DMode())
                         camMan.parametersManager.getParameters().set("exposure", tmp);
                     }
                     if (CameraManager.isSony() == true)
                     {
                         camMan.parametersManager.getParameters().set("sony-ae-mode", tmp);
                     }
-
-                    String camvalue = preferences.getString(ParametersManager.SwitchCamera, ParametersManager.SwitchCamera_MODE_3D);
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_3D))
                     {
                         preferences.edit().putString(ParametersManager.Preferences_Exposure3D, tmp).commit();
                     }
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_2D))
+                    if (camMan.parametersManager.is2DMode())
                         preferences.edit().putString(ParametersManager.Preferences_Exposure2D, tmp).commit();
-                    if (camvalue.equals(ParametersManager.SwitchCamera_MODE_Front))
+                    if (camMan.parametersManager.isFrontMode())
                         preferences.edit().putString(ParametersManager.Preferences_ExposureFront, tmp).commit();
 
                     //if (tmp.equals("manual"))
