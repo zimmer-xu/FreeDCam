@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
-import android.media.Metadata;
+//import android.media.Metadata;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
