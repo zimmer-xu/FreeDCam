@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.widget.RelativeLayout;
 
+import com.htc.view.DisplaySetting;
 import com.lge.real3d.Real3D;
 import com.lge.real3d.Real3DInfo;
 import com.troop.freecam.camera.CameraManager;
@@ -33,19 +34,22 @@ public class CamPreview extends BasePreview {
 
     private void init(Context context)
     {
-        try {
-
-
-
-        isReald3d();
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        mHolder = getHolder();
-        if (hasReal3d)
+        try
         {
-            mReal3D = new Real3D(mHolder);
-            mReal3D.setMinimumNegative(-1);
-            SwitchViewMode();
-        }
+            isReald3d();
+            isopensense();
+            preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            mHolder = getHolder();
+            if (hasReal3d)
+            {
+                mReal3D = new Real3D(mHolder);
+                mReal3D.setMinimumNegative(-1);
+                SwitchViewMode();
+            }
+            if (hasOpenSense)
+            {
+
+            }
         }
         catch (NoSuchMethodError noSuchMethodError)
         {
@@ -92,6 +96,13 @@ public class CamPreview extends BasePreview {
             {
                 mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_NONE, 0));
             }
+        }
+        else if (hasOpenSense)
+        {
+            if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
+                DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
+            else
+                DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_OFF);
         }
     }
 

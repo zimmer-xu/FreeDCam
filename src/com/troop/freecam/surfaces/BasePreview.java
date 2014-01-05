@@ -61,15 +61,11 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
         try {
             Class c = Class.forName("com.htc.view.DisplaySetting");
 
-            final String LGE_3D_DISPLAY = "lge.hardware.real3d.barrier.landscape";
-
-            if(context.getPackageManager().hasSystemFeature(LGE_3D_DISPLAY))
-
-                hasReal3d = true;
+            hasOpenSense = true;
 
         } catch (ClassNotFoundException e) {
 
-            hasReal3d = false;
+            hasOpenSense = false;
 
         }
 
