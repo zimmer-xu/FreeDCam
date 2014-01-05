@@ -5,6 +5,7 @@ import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
+import com.htc.view.DisplaySetting;
 import com.troop.freecam.interfaces.PreviewSizeChangedInterface;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
 {
 
     protected boolean hasReal3d = false;
+    protected boolean hasOpenSense = false;
     protected Context context;
 
     public BasePreview(Context context)
@@ -39,6 +41,25 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
         try {
 
             Class c = Class.forName("com.lge.real3d.Real3D");
+
+            final String LGE_3D_DISPLAY = "lge.hardware.real3d.barrier.landscape";
+
+            if(context.getPackageManager().hasSystemFeature(LGE_3D_DISPLAY))
+
+                hasReal3d = true;
+
+        } catch (ClassNotFoundException e) {
+
+            hasReal3d = false;
+
+        }
+
+    }
+
+    protected void isopensense()
+    {
+        try {
+            Class c = Class.forName("com.htc.view.DisplaySetting");
 
             final String LGE_3D_DISPLAY = "lge.hardware.real3d.barrier.landscape";
 
