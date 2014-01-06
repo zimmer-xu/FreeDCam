@@ -500,7 +500,8 @@ public class ParametersManager
             sizes = parameters.getSupportedVideoSizes();
             if (sizes == null || sizes.size() == 0)
                 sizes = parameters.getSupportedPreviewSizes();
-            SetProfile(preferences.VideoSize.Get());
+            if (!preferences.VideoSize.Get().equals(""))
+                SetProfile(preferences.VideoSize.Get());
 
         }
 
