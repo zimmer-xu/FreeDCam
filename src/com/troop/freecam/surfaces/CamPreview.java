@@ -20,13 +20,6 @@ public class CamPreview extends BasePreview {
 
 	public SurfaceHolder mHolder;
     SurfaceHolder canvasHolder;
-
-    Real3D mReal3D;
-    private CameraManager camMan;
-    public SharedPreferences preferences;
-    boolean is3d = false;
-
-
     public int canvasWidth;
     public int canvasHeight;
 
@@ -48,7 +41,7 @@ public class CamPreview extends BasePreview {
             }
             if (hasOpenSense)
             {
-
+                SwitchViewMode();
             }
         }
         catch (NoSuchMethodError noSuchMethodError)
@@ -79,32 +72,7 @@ public class CamPreview extends BasePreview {
 		// TODO Auto-generated constructor stub
 	}
 
-    public  void SwitchViewMode()
-    {
-        if (hasReal3d)
-        {
-            //dont get the preferences from the SettingManager, its not init at this time
-            if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
-            {
-                if(preferences.getBoolean("upsidedown", false) == false)
-                    mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_SS, Real3D.REAL3D_ORDER_LR));
-                else
-                    mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_SS, Real3D.REAL3D_ORDER_RL));
 
-            }
-            else
-            {
-                mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_NONE, 0));
-            }
-        }
-        else if (hasOpenSense)
-        {
-            if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
-                DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
-            else
-                DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_OFF);
-        }
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)

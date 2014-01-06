@@ -68,27 +68,11 @@ public class DrawingOverlaySurface extends BasePreview implements SurfaceHolder.
 
             SwitchViewMode();
         }
-    }
-
-    public  void SwitchViewMode()
-    {
-
-        if (hasReal3d)
+        if (hasOpenSense)
         {
-            if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
-            {
-                //mReal3D.setViewMode(1);
-                mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_SS, Real3D.REAL3D_ORDER_LR));
-            }
-            else
-            {
-                //mReal3D = null;
-                //mReal3D.setViewMode(2);
-                mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_NONE, 0));
-            }
+            SwitchViewMode();
         }
     }
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)

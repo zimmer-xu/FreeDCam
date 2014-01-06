@@ -1,12 +1,17 @@
 package com.troop.freecam.surfaces;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
 import com.htc.view.DisplaySetting;
+import com.lge.real3d.Real3D;
+import com.lge.real3d.Real3DInfo;
+import com.troop.freecam.camera.CameraManager;
 import com.troop.freecam.interfaces.PreviewSizeChangedInterface;
+import com.troop.freecam.manager.SettingsManager;
 
 import java.util.List;
 
@@ -19,6 +24,11 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
     protected boolean hasReal3d = false;
     protected boolean hasOpenSense = false;
     protected Context context;
+
+    Real3D mReal3D;
+    protected CameraManager camMan;
+    public SharedPreferences preferences;
+    boolean is3d = false;
 
     public BasePreview(Context context)
     {
@@ -69,6 +79,33 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
 
         }
 
+    }
+
+    public  void SwitchViewMode()
+    {
+        if (hasReal3d)
+        {
+            //dont get the preferences from the SettingManager, its not init at this time
+            if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
+            {
+                if(preferences.getBoolean("upsidedown", false) == false)
+                    mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_SS, Real3D.REAL3D_ORDER_LR));
+                else
+                    mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_SS, Real3D.REAL3D_ORDER_RL));
+
+            }
+            else
+            {
+                mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_NONE, 0));
+            }
+        }
+        else if (hasOpenSense)
+        {
+            if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
+                DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
+            else
+                DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_OFF);
+        }
     }
 
     public void setPreviewSize(Camera.Size size)
