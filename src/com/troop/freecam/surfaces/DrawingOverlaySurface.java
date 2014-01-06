@@ -21,12 +21,11 @@ public class DrawingOverlaySurface extends BasePreview implements SurfaceHolder.
 {
 
     public SurfaceHolder mHolder;
-    private Real3D mReal3D;
-    public SharedPreferences preferences;
+
+
     Context context;
     public SizeAbleRectangle drawingRectHelper;
     public boolean RDY = false;
-    private CameraManager camMan;
 
     long lastclick;
 
@@ -53,6 +52,7 @@ public class DrawingOverlaySurface extends BasePreview implements SurfaceHolder.
     {
         this.isInEditMode();
         isReald3d();
+        isopensense();
         this.setZOrderOnTop(true);
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         mHolder = getHolder();

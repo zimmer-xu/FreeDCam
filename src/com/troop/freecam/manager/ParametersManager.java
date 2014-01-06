@@ -212,7 +212,8 @@ public class ParametersManager
         setPictureSize(cameraManager.Settings.PictureSize.Get());
         setPreviewSize(cameraManager.Settings.PreviewSize.Get());
 
-        parameters.setFocusMode(cameraManager.Settings.FocusMode.Get());
+        if (!cameraManager.Settings.FocusMode.Get().equals(""))
+            parameters.setFocusMode(cameraManager.Settings.FocusMode.Get());
 
 
         parameters.setColorEffect(preferences.ColorMode.Get());
@@ -228,8 +229,9 @@ public class ParametersManager
         //parameters.set("rawsave-mode", "1");
         //parameters.set("rawfname", "/mnt/sdcard/test.raw");
 
-        onParametersCHanged();
+
         setToPreferencesToCamera();
+        onParametersCHanged();
     }
 
     public PreviewSizeChangedInterface setPreviewSizeCHanged;

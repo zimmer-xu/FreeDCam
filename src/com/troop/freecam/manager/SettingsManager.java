@@ -317,7 +317,7 @@ public class SettingsManager
     {
         public ImagePostProcessingClass()
         {
-            super(SettingsManager.Preferences.IPP3D, SettingsManager.Preferences.IPP2D, SettingsManager.Preferences.IPPFront, "ldc-nsf");
+            super(SettingsManager.Preferences.IPP3D, SettingsManager.Preferences.IPP2D, SettingsManager.Preferences.IPPFront, "off");
         }
     }
 
@@ -341,7 +341,7 @@ public class SettingsManager
     {
         public FocusModeClass()
         {
-            super(Preferences.Focus3D, Preferences.Focus2D, Preferences.FocusFront, "auto");
+            super(Preferences.Focus3D, Preferences.Focus2D, Preferences.FocusFront, "");
         }
     }
 

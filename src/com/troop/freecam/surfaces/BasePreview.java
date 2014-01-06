@@ -25,7 +25,7 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
     protected boolean hasOpenSense = false;
     protected Context context;
 
-    Real3D mReal3D;
+    protected Real3D mReal3D;
     protected CameraManager camMan;
     public SharedPreferences preferences;
     boolean is3d = false;
