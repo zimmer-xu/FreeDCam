@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
 
 import com.htc.view.DisplaySetting;
@@ -29,6 +30,7 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
     protected CameraManager camMan;
     public SharedPreferences preferences;
     boolean is3d = false;
+    final String TAG = "freecam.Basepreview";
 
     public BasePreview(Context context)
     {
@@ -70,13 +72,13 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
     {
         try {
             Class c = Class.forName("com.htc.view.DisplaySetting");
-
+            Log.d(TAG, "Found class com.htc.view.DisplaySetting");
             hasOpenSense = true;
 
         } catch (ClassNotFoundException e) {
 
             hasOpenSense = false;
-
+            Log.e(TAG, "didnt find class com.htc.view.DisplaySetting, NO 3D!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
 
     }
@@ -101,10 +103,24 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
         }
         else if (hasOpenSense)
         {
+            Log.d(TAG, "try Switching Sense 3D display");
             if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
-                DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
+            {
+                try {
+                    DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
+                    Log.d(TAG, "display set to 3D!!!!!");
+                }
+                catch (Exception ex)
+                {
+                    Log.e(TAG, "Set Sense Display to 3D faild");
+                    ex.printStackTrace();
+
+                }
+            }
             else
+            {
                 DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_OFF);
+            }
         }
     }
 
