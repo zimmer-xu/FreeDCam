@@ -30,6 +30,7 @@ public class BaseCamera
         Settings.CameraCount = Camera.getNumberOfCameras();
         if (Camera.getNumberOfCameras() == 3 || DeviceUtils.isEvo3d())
         {
+            Log.d(TAG, "Device Model: " + Build.MODEL);
             if (tmp.equals(SettingsManager.Preferences.MODE_3D))
             {
                 if (DeviceUtils.isEvo3d())
@@ -44,18 +45,19 @@ public class BaseCamera
                     {
                         ex.printStackTrace();
                         Log.e(TAG, "error open sense 3D Camera");
+                        mCamera.release();
                     }
                 }
                 else
                     mCamera = Camera.open(2);
                 Settings.CurrentCamera = 2;
             }
-            if(tmp.equals(SettingsManager.Preferences.MODE_2D))
+            else if(tmp.equals(SettingsManager.Preferences.MODE_2D))
             {
                 mCamera = Camera.open(0);
                 Settings.CurrentCamera = 0;
             }
-            if (tmp.equals(SettingsManager.Preferences.MODE_Front))
+            else if (tmp.equals(SettingsManager.Preferences.MODE_Front))
             {
                 mCamera = Camera.open(1);
                 Settings.CurrentCamera = 1;

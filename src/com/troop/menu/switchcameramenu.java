@@ -30,12 +30,12 @@ public class switchcameramenu extends  BaseMenu
         {
             set3DMenu(popupMenu);
         }
-        if (Camera.getNumberOfCameras() == 2)
+        else if (Camera.getNumberOfCameras() == 2)
         {
             popupMenu.getMenu().add((CharSequence) SettingsManager.Preferences.MODE_2D);
             popupMenu.getMenu().add((CharSequence) SettingsManager.Preferences.MODE_Front);
         }
-        if (Camera.getNumberOfCameras() == 1)
+        else if (Camera.getNumberOfCameras() == 1)
         {
             popupMenu.getMenu().add((CharSequence) SettingsManager.Preferences.MODE_Front);
         }

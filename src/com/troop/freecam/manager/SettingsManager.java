@@ -104,6 +104,9 @@ public class SettingsManager
     public PreviewFormatClass PreviewFormat;
     public AfPriorityClass afPriority;
 
+    public int CameraCount = 0;
+    public int CurrentCamera = 0;
+
 
     public SettingsManager(SharedPreferences preferences) {
         this.preferences = preferences;

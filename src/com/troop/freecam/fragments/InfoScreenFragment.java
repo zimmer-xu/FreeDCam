@@ -51,7 +51,8 @@ public class InfoScreenFragment extends Fragment
     View view;
 
     //******************************************************
-
+    public InfoScreenFragment()
+    {}
 
     public InfoScreenFragment(CameraManager camMan) {
         this.camMan = camMan;

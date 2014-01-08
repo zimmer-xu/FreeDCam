@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.htc.view.DisplaySetting;
@@ -19,18 +20,19 @@ import java.util.List;
 /**
  * Created by troop on 01.12.13.
  */
-public class BasePreview extends SurfaceView implements PreviewSizeChangedInterface
+public class BasePreview extends SurfaceView implements PreviewSizeChangedInterface , SurfaceHolder.Callback
 {
 
     protected boolean hasReal3d = false;
     protected boolean hasOpenSense = false;
     protected Context context;
-
+    public SurfaceHolder mHolder;
     protected Real3D mReal3D;
     protected CameraManager camMan;
     public SharedPreferences preferences;
     boolean is3d = false;
     final String TAG = "freecam.Basepreview";
+    boolean SenseLateIni = false;
 
     public BasePreview(Context context)
     {
@@ -101,14 +103,22 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
                 mReal3D.setReal3DInfo(new Real3DInfo(true, Real3D.REAL3D_TYPE_NONE, 0));
             }
         }
-        else if (hasOpenSense)
+        /*else if (hasOpenSense)
         {
             Log.d(TAG, "try Switching Sense 3D display");
             if (preferences.getString(SettingsManager.Preferences.SwitchCamera, SettingsManager.Preferences.MODE_Front).equals(SettingsManager.Preferences.MODE_3D))
             {
                 try {
-                    DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
-                    Log.d(TAG, "display set to 3D!!!!!");
+                    if (mHolder.getSurface() == null)
+                    {
+                        Log.e(TAG, "Set 3D will Fail because Surface is null, Try to init when SurfaceCreated");
+                        SenseLateIni = true;
+                    }
+                    else
+                    {
+                        DisplaySetting.setStereoscopic3DFormat(mHolder.getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
+                        Log.d(TAG, "display set to 3D!!!!!");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -121,7 +131,7 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
             {
                 DisplaySetting.setStereoscopic3DFormat(getHolder().getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_OFF);
             }
-        }
+        }*/
     }
 
     public void setPreviewSize(Camera.Size size)
@@ -168,6 +178,27 @@ public class BasePreview extends SurfaceView implements PreviewSizeChangedInterf
 
     @Override
     public void onPreviewsizeHasChanged(int w, int h) {
+
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
+    {
+        if (SenseLateIni)
+        {
+            Log.d(TAG, "Try to Set 3D when surface Created");
+            DisplaySetting.setStereoscopic3DFormat(mHolder.getSurface(), DisplaySetting.STEREOSCOPIC_3D_FORMAT_SIDE_BY_SIDE);
+            Log.d(TAG, "display set to 3D!!!!!");
+        }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
 }

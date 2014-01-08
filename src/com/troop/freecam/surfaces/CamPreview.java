@@ -18,7 +18,7 @@ import com.troop.freecam.manager.SettingsManager;
 
 public class CamPreview extends BasePreview {
 
-	public SurfaceHolder mHolder;
+
     SurfaceHolder canvasHolder;
     public int canvasWidth;
     public int canvasHeight;
@@ -41,7 +41,7 @@ public class CamPreview extends BasePreview {
             }
             if (hasOpenSense)
             {
-                SwitchViewMode();
+                //SwitchViewMode();
             }
         }
         catch (NoSuchMethodError noSuchMethodError)
