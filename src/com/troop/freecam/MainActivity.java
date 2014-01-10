@@ -74,7 +74,7 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
     public boolean recordVideo = false;
     protected CameraManager camMan;
     public CamPreview mPreview;
-    public DrawingOverlaySurface drawSurface;
+    //public DrawingOverlaySurface drawSurface;
     SurfaceHolder holder;
 
     //private final int DEFAULT_SYSTEM_UI_VISIBILITY = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -87,7 +87,7 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         recordVideo = preferences.getBoolean("recordVideo", false);
-        drawSurface = (DrawingOverlaySurface) findViewById(R.id.view);
+        //drawSurface = (DrawingOverlaySurface) findViewById(R.id.view);
         mPreview = (CamPreview) findViewById(R.id.camPreview1);
         mPreview.setKeepScreenOn(true);
         holder = mPreview.getHolder();
@@ -109,7 +109,7 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
 
 
         mPreview.SetCameraManager(camMan);
-        drawSurface.SetCameraManager(camMan);
+        //drawSurface.SetCameraManager(camMan);
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
@@ -500,14 +500,14 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
 
 
             //Crosshair appairing
-            if (camMan.parametersManager.getParameters().getFocusMode().equals("auto"))
+            /*if (camMan.parametersManager.getParameters().getFocusMode().equals("auto"))
             {
                 drawSurface.drawingRectHelper.Enabled = true;
             }
             else
             {
                 drawSurface.drawingRectHelper.Enabled = false;
-            }
+            }*/
             infoScreenFragment.showtext();
 
         }

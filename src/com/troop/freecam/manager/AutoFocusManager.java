@@ -27,13 +27,13 @@ public class AutoFocusManager implements Camera.AutoFocusCallback
         if (Camera.Parameters.FOCUS_MODE_AUTO.equals(focusmode))
         {
             cameraManager.parametersManager.getParameters().setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-            cameraManager.activity.drawSurface.drawingRectHelper.Enabled = true;
+            //cameraManager.activity.drawSurface.drawingRectHelper.Enabled = true;
             //cameraManager.mCamera.cancelAutoFocus();
             cameraManager.mCamera.autoFocus(this);
         }
         else
         {
-            cameraManager.activity.drawSurface.drawingRectHelper.Enabled = false;
+            //cameraManager.activity.drawSurface.drawingRectHelper.Enabled = false;
             cameraManager.activity.mPreview.invalidate();
         }
 

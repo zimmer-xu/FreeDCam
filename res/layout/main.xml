@@ -18,11 +18,11 @@
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true" />
 
-        <com.troop.freecam.surfaces.DrawingOverlaySurface
+        <!--<com.troop.freecam.surfaces.DrawingOverlaySurface
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/view"
-            android:alpha="0.5" />
+            android:alpha="0.5" />*/ -->
 
         <Button
             android:layout_width="@dimen/app_icon_size"

@@ -279,7 +279,7 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
             if (parametersManager.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_AUTO))
             {
 
-                if (activity.drawSurface.drawingRectHelper.drawRectangle == true)
+                /*if (activity.drawSurface.drawingRectHelper.drawRectangle == true)
                 {
                     SetTouchFocus(activity.drawSurface.drawingRectHelper.mainRect);
                     //autoFocusManager.focusing = true;
@@ -288,7 +288,7 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
                     else
                         autoFocusManager.StartFocus();
                 }
-                else if (touchtofocus == false)
+                else*/ if (touchtofocus == false)
                 {
                     touchtofocus = false;
                     autoFocusManager.StartFocus();
@@ -303,7 +303,7 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
 
     public void StartFocus()
     {
-        SetTouchFocus(activity.drawSurface.drawingRectHelper.mainRect);
+        //SetTouchFocus(activity.drawSurface.drawingRectHelper.mainRect);
         mCamera.autoFocus(autoFocusManager);
     }
 
@@ -329,7 +329,7 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
 
         }*/
 
-        if (touchtofocus == false && !autoFocusManager.focusing)
+        /*if (touchtofocus == false && !autoFocusManager.focusing)
         {
             touchtofocus = true;
         //Convert from View's width and height to +/- 1000
@@ -381,10 +381,10 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
             }
         }
         else
-        {
+        {*/
             autoFocusManager.CancelFocus();
             touchtofocus = false;
-        }
+        //}
     }
 
     @Override
