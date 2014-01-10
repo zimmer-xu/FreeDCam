@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
@@ -21,7 +22,7 @@ public class DrawingOverlaySurface extends BasePreview implements SurfaceHolder.
 {
 
     public SurfaceHolder mHolder;
-
+    final String  TAG = "freecam.DrawingOverlaySurface";
 
     Context context;
     public SizeAbleRectangle drawingRectHelper;
@@ -70,6 +71,8 @@ public class DrawingOverlaySurface extends BasePreview implements SurfaceHolder.
         }
         if (hasOpenSense)
         {
+            //mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            Log.d(TAG, "SurfaceViewChangeViewMode");
             SwitchViewMode();
         }
     }

@@ -41,6 +41,7 @@ public class CamPreview extends BasePreview {
             }
             if (hasOpenSense)
             {
+                //mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
                 //SwitchViewMode();
             }
         }

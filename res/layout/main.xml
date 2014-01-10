@@ -18,10 +18,9 @@
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true" />
 
-        <view
+        <com.troop.freecam.surfaces.DrawingOverlaySurface
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            class="com.troop.freecam.surfaces.DrawingOverlaySurface"
             android:id="@+id/view"
             android:alpha="0.5" />
 

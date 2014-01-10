@@ -39,6 +39,7 @@ public class BaseCamera
                     try
                     {
                         mCamera = Camera.open(100);
+                        Settings.CurrentCamera = 100;
                         Log.d(TAG, "sense 3D camera open");
                     }
                     catch (Exception ex)
@@ -49,8 +50,10 @@ public class BaseCamera
                     }
                 }
                 else
+                {
                     mCamera = Camera.open(2);
-                Settings.CurrentCamera = 2;
+                    Settings.CurrentCamera = 2;
+                }
             }
             else if(tmp.equals(SettingsManager.Preferences.MODE_2D))
             {
