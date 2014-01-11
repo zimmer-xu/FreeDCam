@@ -90,7 +90,7 @@
         android:layout_alignParentBottom="false"
         android:layout_alignParentTop="true" />
 
-    <LinearLayout
+    <com.troop.freecam.controls.SeekbarViewControl
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -99,9 +99,8 @@
         android:longClickable="false"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/imageButton_thumb"
-        android:layout_alignParentRight="false">
+        android:layout_alignParentRight="false"/>
 
-    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

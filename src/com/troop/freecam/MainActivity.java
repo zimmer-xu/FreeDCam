@@ -21,17 +21,11 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.troop.freecam.camera.CameraManager;
 import com.troop.freecam.controls.AutoMenuControl;
 import com.troop.freecam.controls.InfoScreenControl;
+import com.troop.freecam.controls.SeekbarViewControl;
 import com.troop.freecam.controls.SettingsMenuControl;
-import com.troop.freecam.fragments.AutoMenuFragment;
-
-import com.troop.freecam.fragments.InfoScreenFragment;
-import com.troop.freecam.fragments.SeekbarViewFragment;
-import com.troop.freecam.fragments.SettingsMenuFagment;
-import com.troop.freecam.surfaces.DrawingOverlaySurface;
 import com.troop.freecam.manager.MyTimer;
 import com.troop.freecam.manager.SettingsManager;
 import com.troop.freecam.interfaces.ParametersChangedInterface;
@@ -65,7 +59,7 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
     SettingsMenuControl settingsFragment;
     InfoScreenControl infoScreenFragment;
     AutoMenuControl autoMenuFragment;
-    SeekbarViewFragment seekbarViewFragment;
+    SeekbarViewControl seekbarViewFragment;
     int currentZoom = 0;
     SensorManager sensorManager;
     Sensor sensor;
@@ -112,8 +106,10 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
         //getSupportFragmentManager().beginTransaction().add(R.id.LayoutAuto, autoMenuFragment).commit();
         autoMenuFragment = (AutoMenuControl)findViewById(R.id.LayoutAuto);
         autoMenuFragment.SetCameraManager(camMan, this);
-        seekbarViewFragment = new SeekbarViewFragment(camMan, this);
-        getSupportFragmentManager().beginTransaction().add(R.id.tableVIEW, seekbarViewFragment).commit();
+        //seekbarViewFragment = new SeekbarViewFragment(camMan, this);
+        //getSupportFragmentManager().beginTransaction().add(R.id.tableVIEW, seekbarViewFragment).commit();
+        seekbarViewFragment = (SeekbarViewControl)findViewById(R.id.tableVIEW);
+        seekbarViewFragment.SetCameraManger(camMan, this);
 
 
         mPreview.SetCameraManager(camMan);
