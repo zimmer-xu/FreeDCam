@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.troop.freecam.camera.CameraManager;
+import com.troop.freecam.controls.AutoMenuControl;
 import com.troop.freecam.controls.InfoScreenControl;
 import com.troop.freecam.controls.SettingsMenuControl;
 import com.troop.freecam.fragments.AutoMenuFragment;
@@ -63,7 +64,7 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
     Button AfAssitButton;
     SettingsMenuControl settingsFragment;
     InfoScreenControl infoScreenFragment;
-    AutoMenuFragment autoMenuFragment;
+    AutoMenuControl autoMenuFragment;
     SeekbarViewFragment seekbarViewFragment;
     int currentZoom = 0;
     SensorManager sensorManager;
@@ -107,8 +108,10 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
         //settingsFragment = new SettingsMenuFagment(camMan, this, infoScreenFragment);
         //getSupportFragmentManager().beginTransaction().add(R.id.LayoutSettings, settingsFragment).commit();
 
-        autoMenuFragment = new AutoMenuFragment(camMan, this);
-        getSupportFragmentManager().beginTransaction().add(R.id.LayoutAuto, autoMenuFragment).commit();
+        //autoMenuFragment = new AutoMenuFragment(camMan, this);
+        //getSupportFragmentManager().beginTransaction().add(R.id.LayoutAuto, autoMenuFragment).commit();
+        autoMenuFragment = (AutoMenuControl)findViewById(R.id.LayoutAuto);
+        autoMenuFragment.SetCameraManager(camMan, this);
         seekbarViewFragment = new SeekbarViewFragment(camMan, this);
         getSupportFragmentManager().beginTransaction().add(R.id.tableVIEW, seekbarViewFragment).commit();
 

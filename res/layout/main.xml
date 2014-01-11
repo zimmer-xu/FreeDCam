@@ -203,16 +203,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <com.troop.freecam.controls.AutoMenuControl
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/LayoutAuto"
                     android:measureWithLargestChild="false"
                     android:baselineAligned="false"
-                    android:background="@drawable/camera_frame_box_ver_bg">
+                    android:background="@drawable/camera_frame_box_ver_bg"/>
 
 
-                </LinearLayout>
+
 
                 <ImageView
                     android:layout_width="wrap_content"
