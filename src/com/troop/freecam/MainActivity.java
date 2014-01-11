@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.troop.freecam.camera.CameraManager;
+import com.troop.freecam.controls.InfoScreenControl;
+import com.troop.freecam.controls.SettingsMenuControl;
 import com.troop.freecam.fragments.AutoMenuFragment;
 
 import com.troop.freecam.fragments.InfoScreenFragment;
@@ -59,8 +61,8 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
     //*******************
     public Boolean AFS_enable;
     Button AfAssitButton;
-    SettingsMenuFagment settingsFragment;
-    InfoScreenFragment infoScreenFragment;
+    SettingsMenuControl settingsFragment;
+    InfoScreenControl infoScreenFragment;
     AutoMenuFragment autoMenuFragment;
     SeekbarViewFragment seekbarViewFragment;
     int currentZoom = 0;
@@ -96,11 +98,14 @@ public class MainActivity extends LayoutActivity implements ParametersChangedInt
 
         initButtons();
 
-        infoScreenFragment = new InfoScreenFragment(camMan);
-        getSupportFragmentManager().beginTransaction().add(R.id.infoScreenContainer, infoScreenFragment).commit();
+        infoScreenFragment = (InfoScreenControl) findViewById(R.id.infoScreenContainer);
+        infoScreenFragment.SetCameraManager(camMan);
+        //getSupportFragmentManager().beginTransaction().add(R.id.infoScreenContainer, infoScreenFragment).commit();
 
-        settingsFragment = new SettingsMenuFagment(camMan, this, infoScreenFragment);
-        getSupportFragmentManager().beginTransaction().add(R.id.LayoutSettings, settingsFragment).commit();
+        settingsFragment = (SettingsMenuControl)findViewById(R.id.LayoutSettings);
+        settingsFragment.SetStuff(camMan, this, infoScreenFragment);
+        //settingsFragment = new SettingsMenuFagment(camMan, this, infoScreenFragment);
+        //getSupportFragmentManager().beginTransaction().add(R.id.LayoutSettings, settingsFragment).commit();
 
         autoMenuFragment = new AutoMenuFragment(camMan, this);
         getSupportFragmentManager().beginTransaction().add(R.id.LayoutAuto, autoMenuFragment).commit();
