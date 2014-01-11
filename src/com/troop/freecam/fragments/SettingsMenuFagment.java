@@ -131,7 +131,7 @@ public class SettingsMenuFagment extends BaseFragment
 
         //switchCamera = new MenuItemFragment(camMan, activity, "Select Camera", "Front", new switchcameramenu(camMan, activity));
         switchCamera = (MenuItemControl)view.findViewById(R.id.switch_camera_control);
-        switchCamera.SetOnClickListner(new FlashMenu(camMan, activity));
+        switchCamera.SetOnClickListner(new switchcameramenu(camMan, activity));
 
 
         //switchFlash = new MenuItemFragment(camMan, activity, "Flash Mode", "", new FlashMenu(camMan, activity));

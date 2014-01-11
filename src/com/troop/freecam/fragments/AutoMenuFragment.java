@@ -10,6 +10,7 @@ import android.widget.Switch;
 import com.troop.freecam.camera.CameraManager;
 import com.troop.freecam.MainActivity;
 import com.troop.freecam.R;
+import com.troop.freecam.controls.MenuItemControl;
 import com.troop.menu.AFPriorityMenu;
 import com.troop.menu.ColorMenu;
 import com.troop.menu.ExposureMenu;
@@ -24,13 +25,13 @@ import com.troop.menu.WhiteBalanceMenu;
 public class AutoMenuFragment extends BaseFragment
 {
     Switch checkboxHDR;
-    MenuItemFragment switchAF;
-    MenuItemFragment switchScene;
-    MenuItemFragment switchWhiteBalance;
-    MenuItemFragment switchColor;
-    MenuItemFragment switchIso;
-    MenuItemFragment switchExposure;
-    MenuItemFragment switchMetering;
+    MenuItemControl switchAF;
+    MenuItemControl switchScene;
+    MenuItemControl switchWhiteBalance;
+    MenuItemControl switchColor;
+    MenuItemControl switchIso;
+    MenuItemControl switchExposure;
+    MenuItemControl switchMetering;
 
     public AutoMenuFragment(CameraManager camMan, MainActivity activity)
     {
@@ -55,24 +56,36 @@ public class AutoMenuFragment extends BaseFragment
         });
 
 
-        FragmentTransaction transaction = this.getChildFragmentManager().beginTransaction();
-        switchAF = new MenuItemFragment(camMan, activity, "AutoFocusPrioritys", "", new AFPriorityMenu(camMan,activity));
-        transaction.add(R.id.auto_menu_fragment_layout, switchAF);
-        switchScene = new MenuItemFragment(camMan,activity,"ScenesModes", "", new SceneMenu(camMan,activity));
-        transaction.add(R.id.auto_menu_fragment_layout, switchScene);
-
-        switchWhiteBalance = new MenuItemFragment(camMan,activity,"WhiteBalanceModes", "", new WhiteBalanceMenu(camMan,activity));
-        transaction.add(R.id.auto_menu_fragment_layout, switchWhiteBalance);
-
-        switchColor = new MenuItemFragment(camMan,activity,"ColorModes", "", new ColorMenu(camMan,activity));
-        switchIso = new MenuItemFragment(camMan,activity,"IsoModes", "", new IsoMenu(camMan,activity));
-        switchExposure = new MenuItemFragment(camMan,activity, "ExposureModes", "", new ExposureMenu(camMan,activity));
-        switchMetering = new MenuItemFragment(camMan,activity,"MeteringModes","", new MeteringMenu(camMan,activity));
+        //FragmentTransaction transaction = this.getChildFragmentManager().beginTransaction();
+        //switchAF = new MenuItemFragment(camMan, activity, "AutoFocusPrioritys", "", new AFPriorityMenu(camMan,activity));
+        switchAF = (MenuItemControl)view.findViewById(R.id.switch_AfPriority_control);
+        switchAF.SetOnClickListner(new AFPriorityMenu(camMan,activity));
+        //transaction.add(R.id.auto_menu_fragment_layout, switchAF);
+        switchScene = (MenuItemControl)view.findViewById(R.id.switch_scenemode_control);
+        switchScene.SetOnClickListner(new SceneMenu(camMan,activity));
+        //switchScene = new MenuItemFragment(camMan,activity,"ScenesModes", "", new SceneMenu(camMan,activity));
+        //transaction.add(R.id.auto_menu_fragment_layout, switchScene);
+        switchWhiteBalance = (MenuItemControl)view.findViewById(R.id.switch_wbModes_control);
+        switchWhiteBalance.SetOnClickListner(new WhiteBalanceMenu(camMan,activity));
+        //switchWhiteBalance = new MenuItemFragment(camMan,activity,"WhiteBalanceModes", "", new WhiteBalanceMenu(camMan,activity));
+        //transaction.add(R.id.auto_menu_fragment_layout, switchWhiteBalance);
+        switchColor = (MenuItemControl)view.findViewById(R.id.switch_colormode_control);
+        switchColor.SetOnClickListner(new ColorMenu(camMan,activity));
+        //switchColor = new MenuItemFragment(camMan,activity,"ColorModes", "", new ColorMenu(camMan,activity));
+        switchIso = (MenuItemControl)view.findViewById(R.id.switch_isomode_control);
+        switchIso.SetOnClickListner(new IsoMenu(camMan,activity));
+        //switchIso = new MenuItemFragment(camMan,activity,"IsoModes", "", new IsoMenu(camMan,activity));
+        switchExposure = (MenuItemControl)view.findViewById(R.id.switch_exposuremode_control);
+        switchExposure.SetOnClickListner(new ExposureMenu(camMan,activity));
+        //switchExposure = new MenuItemFragment(camMan,activity, "ExposureModes", "", new ExposureMenu(camMan,activity));
+        switchMetering = (MenuItemControl)view.findViewById(R.id.switch_meteringmode_control);
+        switchMetering.SetOnClickListner(new MeteringMenu(camMan,activity));
+        /*switchMetering = new MenuItemFragment(camMan,activity,"MeteringModes","", new MeteringMenu(camMan,activity));
         transaction.add(R.id.auto_menu_fragment_layout, switchMetering);
         transaction.add(R.id.auto_menu_fragment_layout, switchColor);
         transaction.add(R.id.auto_menu_fragment_layout, switchIso);
         transaction.add(R.id.auto_menu_fragment_layout, switchExposure);
-        transaction.commit();
+        transaction.commit();*/
     }
 
     public void UpdateUI(boolean settingsReloaded)
@@ -86,34 +99,34 @@ public class AutoMenuFragment extends BaseFragment
     {
 
         if (camMan.parametersManager.getSupportAfpPriority())
-            switchAF.view.setVisibility(View.VISIBLE);
+            switchAF.setVisibility(View.VISIBLE);
         else
-            switchAF.view.setVisibility(View.GONE);
+            switchAF.setVisibility(View.GONE);
 
         if (!camMan.parametersManager.getSupportAutoExposure())
         {
-            switchMetering.view.setVisibility(View.GONE);
+            switchMetering.setVisibility(View.GONE);
         }
         else
-            switchMetering.view.setVisibility(View.VISIBLE);
+            switchMetering.setVisibility(View.VISIBLE);
         if (!camMan.parametersManager.getSupportWhiteBalance())
         {
-            switchWhiteBalance.view.setVisibility(View.GONE);
+            switchWhiteBalance.setVisibility(View.GONE);
         }
         else
-            switchWhiteBalance.view.setVisibility(View.VISIBLE);
+            switchWhiteBalance.setVisibility(View.VISIBLE);
         if (camMan.parametersManager.getSupportIso())
-            switchIso.view.setVisibility(View.VISIBLE);
+            switchIso.setVisibility(View.VISIBLE);
         else
-            switchIso.view.setVisibility(View.GONE);
+            switchIso.setVisibility(View.GONE);
         if (camMan.parametersManager.getSupportExposureMode())
-            switchExposure.view.setVisibility(View.VISIBLE);
+            switchExposure.setVisibility(View.VISIBLE);
         else
-            switchExposure.view.setVisibility(View.GONE);
+            switchExposure.setVisibility(View.GONE);
         if (camMan.parametersManager.getSupportScene())
-            switchScene.view.setVisibility(View.VISIBLE);
+            switchScene.setVisibility(View.VISIBLE);
         else
-            switchScene.view.setVisibility(View.GONE);
+            switchScene.setVisibility(View.GONE);
         view.findViewById(R.id.auto_menu_fragment_layout).requestLayout();
     }
 
