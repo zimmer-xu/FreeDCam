@@ -11,6 +11,7 @@ import android.widget.Switch;
 import com.troop.freecam.camera.CameraManager;
 import com.troop.freecam.MainActivity;
 import com.troop.freecam.R;
+import com.troop.freecam.controls.MenuItemControl;
 import com.troop.freecam.manager.SettingsManager;
 import com.troop.menu.DenoiseMenu;
 import com.troop.menu.FlashMenu;
@@ -32,17 +33,17 @@ public class SettingsMenuFagment extends BaseFragment
     public Switch crop_box;
     InfoScreenFragment infoScreenFragment;
     public Switch checkBoxOnScreen;
-    public MenuItemFragment switchCamera;
-    MenuItemFragment switchFlash;
-    MenuItemFragment switchFocus;
+    public MenuItemControl switchCamera;
+    MenuItemControl switchFlash;
+    MenuItemControl switchFocus;
     //MenuItemFragment switchPictureFormat;
-    MenuItemFragment switchPictureSize;
-    MenuItemFragment switchPreviewSize;
-    MenuItemFragment switchPreviewFormat;
-    MenuItemFragment switchVideoSize;
-    MenuItemFragment switchIPP;
-    MenuItemFragment switchDenoise;
-    MenuItemFragment switchZSL;
+    MenuItemControl switchPictureSize;
+    MenuItemControl switchPreviewSize;
+    MenuItemControl switchPreviewFormat;
+    MenuItemControl switchVideoSize;
+    MenuItemControl switchIPP;
+    MenuItemControl switchDenoise;
+    MenuItemControl switchZSL;
 
     public SettingsMenuFagment(CameraManager camMan, MainActivity activity, InfoScreenFragment infoScreenFragment)
     {
@@ -128,20 +129,47 @@ public class SettingsMenuFagment extends BaseFragment
             }
         });
 
-        switchCamera = new MenuItemFragment(camMan, activity, "Select Camera", "Front", new switchcameramenu(camMan, activity));
+        //switchCamera = new MenuItemFragment(camMan, activity, "Select Camera", "Front", new switchcameramenu(camMan, activity));
+        switchCamera = (MenuItemControl)view.findViewById(R.id.switch_camera_control);
+        switchCamera.SetOnClickListner(new FlashMenu(camMan, activity));
 
-        switchFlash = new MenuItemFragment(camMan, activity, "Flash Mode", "", new FlashMenu(camMan, activity));
-        switchFocus = new MenuItemFragment(camMan,activity, "Focus Mode", "", new FocusMenu(camMan, activity));
+
+        //switchFlash = new MenuItemFragment(camMan, activity, "Flash Mode", "", new FlashMenu(camMan, activity));
+        switchFlash = (MenuItemControl)view.findViewById(R.id.switch_flash_control);
+        switchFlash.SetOnClickListner(new FlashMenu(camMan, activity));
+        //switchFocus = new MenuItemFragment(camMan,activity, "Focus Mode", "", new FocusMenu(camMan, activity));
+        switchFocus = (MenuItemControl)view.findViewById(R.id.switch_focus_control);
+        switchFocus.SetOnClickListner(new FocusMenu(camMan, activity));
         //switchPictureFormat = new MenuItemFragment(camMan,activity, "Picture Format", "", new PictureFormatMenu(camMan,activity));
-        switchPictureSize = new MenuItemFragment(camMan,activity,"Picture Size","", new PictureSizeMenu(camMan, activity));
-        switchPreviewSize = new MenuItemFragment(camMan, activity,"Preview Size", "", new PreviewSizeMenu(camMan, activity));
-        switchPreviewFormat = new MenuItemFragment(camMan, activity, "Preview Format", "", new PreviewFormatMenu(camMan, activity));
-        switchVideoSize = new MenuItemFragment(camMan, activity, "Video Size", "", new VideoSizesMenu(camMan,activity));
-        switchIPP =new MenuItemFragment(camMan, activity, "ImagePostProcessing", "", new IppMenu(camMan,activity));
-        switchDenoise = new MenuItemFragment(camMan, activity, "Denoise", "", new DenoiseMenu(camMan,activity));
-        switchZSL = new MenuItemFragment(camMan, activity, "ZeroShutterLag", "", new ZslMenu(camMan,activity));
+        //switchPictureSize = new MenuItemFragment(camMan,activity,"Picture Size","", new PictureSizeMenu(camMan, activity));
+        switchPictureSize = (MenuItemControl)view.findViewById(R.id.switch_picturesize_control);
+        switchPictureSize.SetOnClickListner(new PictureSizeMenu(camMan, activity));
 
-        FragmentTransaction transaction = this.getChildFragmentManager().beginTransaction();
+        //switchPreviewSize = new MenuItemFragment(camMan, activity,"Preview Size", "", new PreviewSizeMenu(camMan, activity));
+        switchPreviewSize = (MenuItemControl)view.findViewById(R.id.switch_previewsize_control);
+        switchPreviewSize.SetOnClickListner(new PreviewSizeMenu(camMan, activity));
+
+        //switchPreviewFormat = new MenuItemFragment(camMan, activity, "Preview Format", "", new PreviewFormatMenu(camMan, activity));
+        switchPreviewFormat = (MenuItemControl)view.findViewById(R.id.switch_previewformat_control);
+        switchPreviewFormat.SetOnClickListner(new PreviewFormatMenu(camMan, activity));
+
+        //switchVideoSize = new MenuItemFragment(camMan, activity, "Video Size", "", new VideoSizesMenu(camMan,activity));
+        switchVideoSize = (MenuItemControl)view.findViewById(R.id.switch_videosize_control);
+        switchVideoSize.SetOnClickListner(new VideoSizesMenu(camMan, activity));
+
+        //switchIPP =new MenuItemFragment(camMan, activity, "ImagePostProcessing", "", new IppMenu(camMan,activity));
+        switchIPP = (MenuItemControl)view.findViewById(R.id.switch_ipp_control);
+        switchIPP.SetOnClickListner(new IppMenu(camMan,activity));
+
+        //switchDenoise = new MenuItemFragment(camMan, activity, "Denoise", "", new DenoiseMenu(camMan,activity));
+        switchDenoise = (MenuItemControl)view.findViewById(R.id.switch_denoise_control);
+        switchDenoise.SetOnClickListner(new DenoiseMenu(camMan,activity));
+
+        switchZSL = (MenuItemControl) view.findViewById(R.id.switch_zsl_control);
+        switchZSL.SetOnClickListner(new ZslMenu(camMan,activity));
+        //switchZSL = new MenuItemFragment(camMan, activity, "ZeroShutterLag", "", new ZslMenu(camMan,activity));
+
+        /*FragmentTransaction transaction = this.getChildFragmentManager().beginTransaction();
         transaction.add(R.id.popupLayoutSettings, switchCamera);
         transaction.add(R.id.popupLayoutSettings, switchFlash);
         transaction.add(R.id.popupLayoutSettings, switchFocus);
@@ -154,7 +182,7 @@ public class SettingsMenuFagment extends BaseFragment
         transaction.add(R.id.popupLayoutSettings, switchZSL);
         //transaction.add(R.id.popupLayoutSettings, switchPictureFormat);
         transaction.commit();
-        //transaction.show(switchCamera);
+        //transaction.show(switchCamera);*/
 
     }
     public void Hide()
@@ -183,23 +211,23 @@ public class SettingsMenuFagment extends BaseFragment
         //ZeroShutterLag
         if (camMan.parametersManager.getSupportZSL())
         {
-            if (switchZSL.view.getVisibility() == View.GONE)
-                switchZSL.view.setVisibility(View.VISIBLE);
+            if (switchZSL.getVisibility() == View.GONE)
+                switchZSL.setVisibility(View.VISIBLE);
             switchZSL.SetButtonText(camMan.parametersManager.ZSLModes.getValue());
         }
         else
-        if (switchZSL.view.getVisibility() == View.VISIBLE)
-            switchZSL.view.setVisibility(View.GONE);
+        if (switchZSL.getVisibility() == View.VISIBLE)
+            switchZSL.setVisibility(View.GONE);
 
         //ImagePostProcessing
         if (camMan.parametersManager.getSupportIPP())
         {
-            if (switchIPP.view.getVisibility() == View.GONE)
-                switchIPP.view.setVisibility(View.VISIBLE);
+            if (switchIPP.getVisibility() == View.GONE)
+                switchIPP.setVisibility(View.VISIBLE);
             switchIPP.SetButtonText(camMan.parametersManager.getParameters().get("ipp"));
         }
         else
-            switchIPP.view.setVisibility(View.GONE);
+            switchIPP.setVisibility(View.GONE);
         if (camMan.Settings.Cameras.is3DMode())
         {
             crop_box.setVisibility(View.VISIBLE);
@@ -209,11 +237,11 @@ public class SettingsMenuFagment extends BaseFragment
             crop_box.setVisibility(View.GONE);
         //FLASH
         if (!camMan.parametersManager.getSupportFlash())
-            switchFlash.view.setVisibility(View.GONE);
+            switchFlash.setVisibility(View.GONE);
         else
         {
-            if (switchFlash.view.getVisibility() == View.GONE)
-                switchFlash.view.setVisibility(View.VISIBLE);
+            if (switchFlash.getVisibility() == View.GONE)
+                switchFlash.setVisibility(View.VISIBLE);
             switchFlash.SetButtonText(camMan.parametersManager.getParameters().getFlashMode());
         }
         switchFocus.SetButtonText(camMan.parametersManager.getParameters().getFocusMode());
