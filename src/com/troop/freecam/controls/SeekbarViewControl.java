@@ -164,6 +164,7 @@ public class SeekbarViewControl extends LinearLayout
             min *= -1;
         int max = camMan.parametersManager.getParameters().getMaxExposureCompensation() + min;
         exposureSeekbar.setMax(max);
+        camMan.manualExposureManager.ExternalSet = true;
         exposureSeekbar.setProgress(camMan.parametersManager.getParameters().getMaxExposureCompensation());
         camMan.manualExposureManager.SetMinMax(camMan.parametersManager.getParameters().getMinExposureCompensation(), camMan.parametersManager.getParameters().getMaxExposureCompensation());
         //camMan.manualExposureManager.ExternalSet = true;

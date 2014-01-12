@@ -25,7 +25,7 @@ public class ParametersManager
     public static final String Preferences_ZSL = "zsl_value";
     //public static final String Preferences_Composition = "front_ipp";
     //public static final String Preferences_HFR = "hfr_video";
-
+    final String TAG ="freecam.Parametersmanager";
     CameraManager cameraManager;
     MainActivity mainActivity;
     android.hardware.Camera.Parameters parameters;
@@ -83,11 +83,12 @@ public class ParametersManager
 
     public void SetCameraParameters(android.hardware.Camera.Parameters parameters)
     {
+        Log.d(TAG, "Try LOading Parameters");
         loadingParametersFinish = false;
         this.parameters = parameters;
         String[] paras =  parameters.flatten().split(";");
-        for(int i = 0; i < paras.length; i++)
-            Log.d("CameraParameters", paras[i]);
+       /* for(int i = 0; i < paras.length; i++)
+            Log.d("CameraParameters", paras[i]);*/
         checkParametersSupport();
         Brightness = new BrightnessManager();
         AfPriority = new AFPriorityManager();
@@ -100,6 +101,7 @@ public class ParametersManager
         SceneMode = new SceneModeClass();
         ImagePostProcessing = new ImagePostProcessingClass();
         PreviewFormat = new PreviewFormatClass();
+        Log.d(TAG, "Loading Parameters Finished");
         loadDefaultOrLastSavedSettings();
         loadingParametersFinish = true;
         onParametersCHanged(true);
@@ -138,6 +140,7 @@ public class ParametersManager
         {
             supportSharpness = false;
         }
+        Log.d(TAG, "Sharpness:" + supportSharpness);
         try
         {
             int i = parameters.getInt("contrast");
@@ -147,7 +150,7 @@ public class ParametersManager
         {
             supportContrast = false;
         }
-
+        Log.d(TAG, "Contrast:" + supportContrast);
         try
         {
             int i = parameters.getInt("saturation");
@@ -157,11 +160,12 @@ public class ParametersManager
         {
             supportSaturation = false;
         }
-
+        Log.d(TAG, "Saturation:" + supportSaturation);
         if (parameters.getFlashMode() != null)
             supportFlash = true;
         else
             supportFlash = false;
+        Log.d(TAG, "Flash:" + supportFlash);
         try
         {
             if (!parameters.get("vnf-supported").equals(""))
@@ -171,6 +175,7 @@ public class ParametersManager
         {
             supportVNF = false;
         }
+        Log.d(TAG, "VNF:" + supportVNF);
         try
         {
             if (!parameters.get("auto-exposure-values").equals(""))
@@ -180,16 +185,18 @@ public class ParametersManager
         {
             supportAutoExposure = false;
         }
+        Log.d(TAG, "AutoExposure:" + supportAutoExposure);
     }
 
     private void loadDefaultOrLastSavedSettings()
     {
-        if(DeviceUtils.isQualcomm())
+        Log.d(TAG, "Loading Default Or Last Saved Settings");
+        /*if(DeviceUtils.isQualcomm())
         {
             parameters.set("denoise","denoise-off");
             parameters.set("power-mode","Normal_Power");
             parameters.set("mce","disable");
-        }
+        }*/
 
         if (getSupportAfpPriority() && !preferences.afPriority.Get().equals(""))
             AfPriority.Set(preferences.afPriority.Get());
@@ -231,7 +238,7 @@ public class ParametersManager
         //parameters.set("rawsave-mode", "1");
         //parameters.set("rawfname", "/mnt/sdcard/test.raw");
 
-
+        Log.d(TAG, "Finished Loading Default Or Last Saved Settings");
         setToPreferencesToCamera();
         onParametersCHanged();
     }
@@ -327,7 +334,17 @@ public class ParametersManager
 
     private void setToPreferencesToCamera()
     {
-        cameraManager.mCamera.setParameters(parameters);
+        Log.d(TAG, "Try to set Parameters To Cam");
+        try
+        {
+            cameraManager.mCamera.setParameters(parameters);
+            Log.d(TAG, "Parameters are set to Cam");
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            Log.d(TAG, "Failed to set Parameters to Cam");
+        }
     }
 
     public boolean doCropping()

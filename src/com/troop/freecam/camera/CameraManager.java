@@ -232,8 +232,8 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
             parametersManager.SetCameraParameters(mCamera.getParameters());
 
             mCamera.stopPreview();
-            parametersManager.SetJpegQuality(100);
-            parametersManager.SetContrast(100);
+            //parametersManager.SetJpegQuality(100);
+            //parametersManager.SetContrast(100);
             mCamera.startPreview();
 
         }
