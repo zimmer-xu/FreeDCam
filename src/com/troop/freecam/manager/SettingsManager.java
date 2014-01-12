@@ -139,7 +139,7 @@ public class SettingsManager
 
         public String GetCamera()
         {
-            return preferences.getString(Preferences.SwitchCamera, Preferences.MODE_Front);
+            return preferences.getString(Preferences.SwitchCamera, Preferences.MODE_3D);
         }
 
         public CameraValues GetCameraEnum()

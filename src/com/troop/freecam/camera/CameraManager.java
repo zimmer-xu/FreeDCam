@@ -185,16 +185,21 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
         }
     }
 
+    public  void Start(SurfaceHolder holder)
+    {
+        OpenCamera(holder);
+    }
+
     public  void Start()
     {
-        OpenCamera();
+        OpenCamera(activity.mPreview.mHolder);
     }
 
     @Override
-    protected void OpenCamera() {
-        super.OpenCamera();
+    protected void OpenCamera(SurfaceHolder holder) {
+        super.OpenCamera(holder);
         try {
-            mCamera.setPreviewDisplay(activity.mPreview.mHolder);
+            mCamera.setPreviewDisplay(holder);
             mCamera.setZoomChangeListener(zoomManager);
             if(Settings.OrientationFix.GET() == true)
                 fixCameraDisplayOrientation();
@@ -400,7 +405,7 @@ public class CameraManager extends VideoCam implements SurfaceHolder.Callback , 
         // The Surface has been created, acquire the camera and tell it where
         // to draw.
 
-        Start();
+        Start(holder);
         Running = true;
 
     }

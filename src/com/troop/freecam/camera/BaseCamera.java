@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.os.Build;
 import android.util.Log;
+import android.view.SurfaceHolder;
 
 import com.troop.freecam.manager.ParametersManager;
 import com.troop.freecam.manager.SettingsManager;
@@ -24,7 +25,7 @@ public class BaseCamera
         this.Settings = Settings;
     }
 
-    protected void OpenCamera()
+    protected void OpenCamera(SurfaceHolder holder)
     {
         String tmp = Settings.Cameras.GetCamera();
         Settings.CameraCount = Camera.getNumberOfCameras();

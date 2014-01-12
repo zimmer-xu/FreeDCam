@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
+import android.view.SurfaceHolder;
 
 import com.troop.freecam.surfaces.CamPreview;
 import com.troop.freecam.utils.SavePictureTask;
@@ -112,8 +113,8 @@ public class VideoCam extends PictureCam
     }
 
     @Override
-    protected void OpenCamera() {
-        super.OpenCamera();
+    protected void OpenCamera(SurfaceHolder holder) {
+        super.OpenCamera(holder);
         recorder = new MediaRecorder();
     }
 
